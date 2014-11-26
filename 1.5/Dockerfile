@@ -1,15 +1,11 @@
 FROM debian:wheezy
 
-RUN apt-get update \
-	&& apt-get install -y curl \
-	&& rm -rf /var/lib/apt/lists/*
-
 ENV HAPROXY_MAJOR 1.5
 ENV HAPROXY_VERSION 1.5.9
 ENV HAPROXY_MD5 b7672bb6a8aa188a655b418f3c96f65c
 
 # see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
-RUN buildDeps='gcc libc6-dev libpcre3-dev libssl-dev make' \
+RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
 	&& set -x \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	&& curl -SL "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \
