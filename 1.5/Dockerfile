@@ -6,7 +6,7 @@ RUN apt-get update \
 
 ENV HAPROXY_MAJOR 1.5
 ENV HAPROXY_VERSION 1.5.9
-ENV HAPROXY_MD5 b7672bb6a8aa188a655b418f3c96f65c  haproxy-1.5.9.tar.gz
+ENV HAPROXY_MD5 b7672bb6a8aa188a655b418f3c96f65c
 
 # see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN buildDeps='gcc libc6-dev libpcre3-dev libssl-dev make' \
