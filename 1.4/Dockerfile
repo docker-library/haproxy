@@ -1,8 +1,8 @@
 FROM debian:wheezy
 
 ENV HAPROXY_MAJOR 1.4
-ENV HAPROXY_VERSION 1.4.25
-ENV HAPROXY_MD5 74b5ec1f0f9b4d148c8083bcfb512ccd
+ENV HAPROXY_VERSION 1.4.26
+ENV HAPROXY_MD5 0606180bb01d9b91b49e6ca16e681172
 
 # see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
