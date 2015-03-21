@@ -1,6 +1,6 @@
 FROM debian:wheezy
 
-RUN apt-get update && apt-get install -y libssl1.0.0 --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libssl1.0.0 libpcre3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 ENV HAPROXY_MAJOR 1.5
 ENV HAPROXY_VERSION 1.5.11
