@@ -4,6 +4,9 @@ ENV HAPROXY_MAJOR 1.4
 ENV HAPROXY_VERSION 1.4.26
 ENV HAPROXY_MD5 0606180bb01d9b91b49e6ca16e681172
 
+# install runtime dependencies so 'apt-get purge --auto-remove' doesn't remove them when $buildDeps is cleaned up
+RUN apt-get update && apt-get install -y libpcre3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
 # see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
 	&& set -x \
