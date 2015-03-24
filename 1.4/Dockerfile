@@ -1,5 +1,7 @@
 FROM debian:wheezy
 
+RUN apt-get update && apt-get install -y libpcre3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
 ENV HAPROXY_MAJOR 1.4
 ENV HAPROXY_VERSION 1.4.26
 ENV HAPROXY_MD5 0606180bb01d9b91b49e6ca16e681172
