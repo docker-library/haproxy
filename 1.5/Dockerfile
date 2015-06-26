@@ -3,8 +3,8 @@ FROM debian:wheezy
 RUN apt-get update && apt-get install -y libssl1.0.0 libpcre3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 ENV HAPROXY_MAJOR 1.5
-ENV HAPROXY_VERSION 1.5.12
-ENV HAPROXY_MD5 4b94b257f16d88c315716b062b22e48a
+ENV HAPROXY_VERSION 1.5.13
+ENV HAPROXY_MD5 30cf07875ecae4fd6c4c309627afa8f1
 
 # see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
