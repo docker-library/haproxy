@@ -39,6 +39,6 @@ RUN set -x \
 	)" \
 	&& apk add --virtual .haproxy-rundeps $runDeps \
 	&& apk del .build-deps \
-	&& rm -rf /usr/src/haproxy-$HAPROXY_VERISION
+	&& rm -rf /usr/src/haproxy-$HAPROXY_VERSION
 
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
