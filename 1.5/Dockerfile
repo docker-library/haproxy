@@ -27,4 +27,6 @@ RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
 	&& rm -rf /usr/src/haproxy \
 	&& apt-get purge -y --auto-remove $buildDeps
 
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
