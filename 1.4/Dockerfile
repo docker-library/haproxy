@@ -1,30 +1,14 @@
 FROM debian:jessie
 
-RUN apt-get update && apt-get install -y libpcre3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys AEF2348766F371C689A7360095A42FE8353525F9
 
 ENV HAPROXY_MAJOR 1.4
-ENV HAPROXY_VERSION 1.4.26
-ENV HAPROXY_MD5 0606180bb01d9b91b49e6ca16e681172
 
-# see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
-RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
-	&& set -x \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	&& curl -SL "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \
-	&& echo "${HAPROXY_MD5}  haproxy.tar.gz" | md5sum -c \
-	&& mkdir -p /usr/src/haproxy \
-	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
-	&& rm haproxy.tar.gz \
-	&& make -C /usr/src/haproxy \
-		TARGET=linux2628 \
-		USE_PCRE=1 PCREDIR= \
-		USE_OPENSSL=1 \
-		USE_ZLIB=1 \
-		all \
-		install-bin \
-	&& mkdir -p /usr/local/etc/haproxy \
-	&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \
-	&& rm -rf /usr/src/haproxy \
-	&& apt-get purge -y --auto-remove $buildDeps
+RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/backports.list \
+    && echo "deb http://haproxy.debian.net jessie-backports-${HAPROXY_MAJOR} main" > /etc/apt/sources.list.d/haproxy.list
+
+RUN apt-get update \
+    && apt-get install haproxy -y -t jessie-backports-${HAPROXY_MAJOR} \
+    && rm -rf /var/lib/apt/lists/*
 
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
