@@ -19,8 +19,9 @@ RUN set -x \
 	&& echo "${HAPROXY_MD5}  haproxy.tar.gz" | md5sum -c \
 	&& mkdir -p /usr/src \
 	&& tar -xzf haproxy.tar.gz -C /usr/src \
+	&& mv "/usr/src/haproxy-$HAPROXY_VERSION" /usr/src/haproxy \
 	&& rm haproxy.tar.gz \
-	&& make -C /usr/src/haproxy-$HAPROXY_VERSION \
+	&& make -C /usr/src/haproxy \
 		TARGET=linux2628 \
 		USE_PCRE=1 PCREDIR= \
 		USE_OPENSSL=1 \
@@ -28,8 +29,8 @@ RUN set -x \
 		all \
 		install-bin \
 	&& mkdir -p /usr/local/etc/haproxy \
-	&& cp -R /usr/src/haproxy-$HAPROXY_VERSION/examples/errorfiles \
-		/usr/local/etc/haproxy/errors \
+	&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \
+	&& rm -rf /usr/src/haproxy \
 	&& runDeps="$( \
 		scanelf --needed --nobanner --recursive /usr/local \
 			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
@@ -38,7 +39,6 @@ RUN set -x \
 			| sort -u \
 	)" \
 	&& apk add --virtual .haproxy-rundeps $runDeps \
-	&& apk del .build-deps \
-	&& rm -rf /usr/src/haproxy-$HAPROXY_VERSION
+	&& apk del .build-deps
 
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
