@@ -1,8 +1,8 @@
-#!/bin/bash
-set -eo pipefail
+#!/bin/sh
+set -e
 
 # first arg is `-f` or `--some-option`
-if [ "${1:0:1}" = '-' ]; then
+if [ "${1#-}" != "$1" ]; then
 	set -- haproxy "$@"
 fi
 

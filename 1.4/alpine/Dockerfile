@@ -41,4 +41,6 @@ RUN set -x \
 	&& apk add --virtual .haproxy-rundeps $runDeps \
 	&& apk del .build-deps
 
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
