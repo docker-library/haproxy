@@ -1,8 +1,8 @@
 FROM alpine:3.4
 
 ENV HAPROXY_MAJOR 1.6
-ENV HAPROXY_VERSION 1.6.6
-ENV HAPROXY_MD5 b418d83cf4f2da328f6eb8c255b8716b
+ENV HAPROXY_VERSION 1.6.7
+ENV HAPROXY_MD5 a046ed63b00347bd367b983529dd541f
 
 # see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
