@@ -12,4 +12,8 @@ if [ "$1" = 'haproxy' ]; then
 	set -- "$(which haproxy-systemd-wrapper)" -p /run/haproxy.pid "$@"
 fi
 
+if [ "$SYSLOGD" -eq 1 ]; then
+	syslogd -nLO- &
+fi
+
 exec "$@"

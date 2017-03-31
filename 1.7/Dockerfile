@@ -2,6 +2,7 @@ FROM debian:jessie-backports
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
+		busybox-syslogd \
 		liblua5.3-0 \
 		libpcre3 \
 		libssl1.0.0 \
@@ -10,6 +11,7 @@ RUN apt-get update \
 ENV HAPROXY_MAJOR 1.7
 ENV HAPROXY_VERSION 1.7.9
 ENV HAPROXY_MD5 a2bbbdd45ffe18d99cdcf26aa992f92d
+ENV SYSLOGD 0
 
 # see http://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
