@@ -9,7 +9,6 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
-
 travisEnv=
 for version in "${versions[@]}"; do
 	fullVersion="$(curl -sSL --compressed 'http://www.haproxy.org/download/'"$version"'/src/' | grep '<a href="haproxy-'"$version"'.*\.tar\.gz"' | sed -r 's!.*<a href="haproxy-([^"/]+)\.tar\.gz".*!\1!' | sort -V | tail -1)"
@@ -26,6 +25,7 @@ for version in "${versions[@]}"; do
 		( set -x; sed -ri "$sedExpr" "$version/$variant/Dockerfile" )
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
+	travisEnv='\n  - VERSION='"$version ARCH=i386$travisEnv"
 	travisEnv='\n  - VERSION='"$version VARIANT=$travisEnv"
 done
 
