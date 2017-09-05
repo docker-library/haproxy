@@ -3,12 +3,16 @@ services: docker
 
 env:
   - VERSION=1.7 VARIANT=
+  - VERSION=1.7 ARCH=i386
   - VERSION=1.7 VARIANT=alpine
   - VERSION=1.6 VARIANT=
+  - VERSION=1.6 ARCH=i386
   - VERSION=1.6 VARIANT=alpine
   - VERSION=1.5 VARIANT=
+  - VERSION=1.5 ARCH=i386
   - VERSION=1.5 VARIANT=alpine
   - VERSION=1.4 VARIANT=
+  - VERSION=1.4 ARCH=i386
   - VERSION=1.4 VARIANT=alpine
 
 install:
@@ -16,11 +20,17 @@ install:
 
 before_script:
   - env | sort
-  - cd "$VERSION"
+  - cd "$VERSION${VARIANT+/$VARIANT}"
   - image="haproxy:${VERSION}${VARIANT+-$VARIANT}"
+  - |
+    if [ -n "$ARCH" ]; then
+        from="$(awk '$1 == toupper("FROM") { print $2 }' Dockerfile)"
+        docker pull "$ARCH/$from"
+        docker tag "$ARCH/$from" "$from"
+    fi
 
 script:
-  - travis_retry docker build -t "$image" "${VARIANT:-.}"
+  - travis_retry docker build -t "$image" .
   - ~/official-images/test/run.sh "$image"
 
 after_script:
