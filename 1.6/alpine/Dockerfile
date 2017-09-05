@@ -3,6 +3,8 @@ FROM alpine:3.5
 ENV HAPROXY_MAJOR 1.6
 ENV HAPROXY_VERSION 1.6.13
 ENV HAPROXY_MD5 782947642c0c7983f73624d8d45e2321
+
+ENV DUMB_INIT_VERSION 1.2.0
 ENV SYSLOGD 0
 
 # https://www.lua.org/ftp/#source
@@ -25,6 +27,9 @@ RUN set -x \
 		tar \
 		zlib-dev \
 	\
+	&& wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_$DUMB_INIT_VERSION_amd64 \
+	&& chmod +x /usr/local/bin/dumb-init \
+	&& sync \
 # install Lua
 	&& wget -O lua.tar.gz "https://www.lua.org/ftp/lua-$LUA_VERSION.tar.gz" \
 	&& echo "$LUA_SHA1 *lua.tar.gz" | sha1sum -c \
@@ -78,5 +83,5 @@ RUN set -x \
 	&& apk del .build-deps
 
 COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--", "/docker-entrypoint.sh"]
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
