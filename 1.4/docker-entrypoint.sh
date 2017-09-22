@@ -7,7 +7,7 @@ if [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$SYSLOGD" -eq 1 ]; then
-	syslogd -nLO- &
+	dumb-init -r 1:0 -r 12:0 -- syslogd -nLO- &
 fi
 
 exec "$@"

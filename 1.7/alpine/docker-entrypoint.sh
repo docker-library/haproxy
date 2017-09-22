@@ -13,7 +13,8 @@ if [ "$1" = 'haproxy' ]; then
 fi
 
 if [ "$SYSLOGD" -eq 1 ]; then
-	syslogd -nLO- &
+	# Local syslogd complementary process that ignores SIGHUP and SIGUSR2
+	dumb-init -r 1:0 -r 12:0 -- syslogd -nLO- &
 fi
 
 exec "$@"

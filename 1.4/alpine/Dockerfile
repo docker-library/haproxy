@@ -18,7 +18,7 @@ RUN set -x \
 		openssl-dev \
 		pcre-dev \
 		zlib-dev \
-	&& curl -SLo /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v$DUMB_INIT_VERSION/dumb-init_$DUMB_INIT_VERSION_amd64 \
+	&& curl -SLo /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64 \
 	&& chmod +x /usr/local/bin/dumb-init \
 	&& sync \
 	&& curl -SL "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \
