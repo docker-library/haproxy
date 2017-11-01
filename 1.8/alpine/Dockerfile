@@ -2,7 +2,7 @@ FROM alpine:3.5
 
 ENV HAPROXY_MAJOR 1.8
 ENV HAPROXY_VERSION 1.8-rc1
-ENV HAPROXY_MD5 a2bbbdd45ffe18d99cdcf26aa992f92d
+ENV HAPROXY_MD5 8a9a3fcee37b147c4b5488d5b2fffb3a
 
 # https://www.lua.org/ftp/#source
 ENV LUA_VERSION=5.3.3 \
