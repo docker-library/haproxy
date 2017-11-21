@@ -77,4 +77,4 @@ RUN set -x \
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["haproxy", "-W", "-db", "-f", "/usr/local/etc/haproxy/"]
+CMD ["haproxy", "-f", "/usr/local/etc/haproxy/"]
