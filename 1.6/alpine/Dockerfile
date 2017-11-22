@@ -5,8 +5,8 @@ ENV HAPROXY_VERSION 1.6.13
 ENV HAPROXY_MD5 782947642c0c7983f73624d8d45e2321
 
 # https://www.lua.org/ftp/#source
-ENV LUA_VERSION=5.3.3 \
-	LUA_SHA1=a0341bc3d1415b814cc738b2ec01ae56045d64ef
+ENV LUA_VERSION=5.3.4 \
+	LUA_SHA1=79790cfd40e09ba796b01a571d4d63b52b1cd950
 
 # see http://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
