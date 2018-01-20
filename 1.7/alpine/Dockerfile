@@ -8,7 +8,7 @@ ENV HAPROXY_MD5 a9b98a228660dee5ee65b62e3bd57822
 ENV LUA_VERSION=5.3.4 \
 	LUA_SHA1=79790cfd40e09ba796b01a571d4d63b52b1cd950
 
-# see http://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
+# see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	\
 	&& apk add --no-cache --virtual .build-deps \
@@ -43,7 +43,7 @@ RUN set -x \
 	&& rm -rf /usr/src/lua \
 	\
 # install HAProxy
-	&& wget -O haproxy.tar.gz "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
+	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
 	&& echo "$HAPROXY_MD5 *haproxy.tar.gz" | md5sum -c \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
