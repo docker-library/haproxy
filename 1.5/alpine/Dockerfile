@@ -7,6 +7,7 @@ ENV HAPROXY_MD5 74d49316f00e1fd9859bcac84ab04b5c
 # see https://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	&& apk add --no-cache --virtual .build-deps \
+		ca-certificates \
 		curl \
 		gcc \
 		libc-dev \

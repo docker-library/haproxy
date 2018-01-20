@@ -7,7 +7,7 @@ ENV HAPROXY_VERSION 1.5.19
 ENV HAPROXY_MD5 74d49316f00e1fd9859bcac84ab04b5c
 
 # see https://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
-RUN buildDeps='curl gcc libc6-dev libpcre3-dev libssl-dev make' \
+RUN buildDeps='ca-certificates curl gcc libc6-dev libpcre3-dev libssl-dev make' \
 	&& set -x \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	&& curl -SL "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \

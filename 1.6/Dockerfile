@@ -15,6 +15,7 @@ ENV HAPROXY_MD5 5daf73eb70052e8ec66c40817f265202
 RUN set -x \
 	\
 	&& buildDeps=' \
+		ca-certificates \
 		gcc \
 		libc6-dev \
 		liblua5.3-dev \
