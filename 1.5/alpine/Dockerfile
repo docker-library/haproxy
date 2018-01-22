@@ -4,9 +4,10 @@ ENV HAPROXY_MAJOR 1.5
 ENV HAPROXY_VERSION 1.5.19
 ENV HAPROXY_MD5 74d49316f00e1fd9859bcac84ab04b5c
 
-# see http://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
+# see https://sources.debian.net/src/haproxy/1.5.8-1/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	&& apk add --no-cache --virtual .build-deps \
+		ca-certificates \
 		curl \
 		gcc \
 		libc-dev \
@@ -15,7 +16,7 @@ RUN set -x \
 		openssl-dev \
 		pcre-dev \
 		zlib-dev \
-	&& curl -SL "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \
+	&& curl -SL "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \
 	&& echo "${HAPROXY_MD5}  haproxy.tar.gz" | md5sum -c \
 	&& mkdir -p /usr/src \
 	&& tar -xzf haproxy.tar.gz -C /usr/src \

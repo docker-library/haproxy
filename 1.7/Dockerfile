@@ -11,10 +11,11 @@ ENV HAPROXY_MAJOR 1.7
 ENV HAPROXY_VERSION 1.7.10
 ENV HAPROXY_MD5 a9b98a228660dee5ee65b62e3bd57822
 
-# see http://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
+# see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	\
 	&& buildDeps=' \
+		ca-certificates \
 		gcc \
 		libc6-dev \
 		liblua5.3-dev \
@@ -25,7 +26,7 @@ RUN set -x \
 	' \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	\
-	&& wget -O haproxy.tar.gz "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
+	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
 	&& echo "$HAPROXY_MD5 *haproxy.tar.gz" | md5sum -c \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \

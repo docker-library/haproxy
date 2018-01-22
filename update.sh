@@ -18,14 +18,14 @@ for version in "${versions[@]}"; do
 	fi
 
 	fullVersion="$(
-		curl -sSL --compressed 'http://www.haproxy.org/download/'"$rcVersion"'/src/' \
+		curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/' \
 			| grep '<a href="haproxy-'"$version"'.*\.tar\.gz"' \
 			| grep $rcGrepV -E 'rc' \
 			| sed -r 's!.*<a href="haproxy-([^"/]+)\.tar\.gz".*!\1!' \
 			| sort -V \
 			| tail -1
 	)"
-	md5="$(curl -sSL --compressed 'http://www.haproxy.org/download/'"$rcVersion"'/src/haproxy-'"$fullVersion"'.tar.gz.md5' | cut -d' ' -f1)"
+	md5="$(curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/haproxy-'"$fullVersion"'.tar.gz.md5' | cut -d' ' -f1)"
 	sedExpr='
 			s/^(ENV HAPROXY_MAJOR) .*/\1 '"$rcVersion"'/;
 			s/^(ENV HAPROXY_VERSION) .*/\1 '"$fullVersion"'/;
