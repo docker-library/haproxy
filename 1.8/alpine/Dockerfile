@@ -35,7 +35,7 @@ COPY --from=build /files /
 COPY docker-entrypoint.sh /
 
 RUN set -ex ;\
-    apk add --no-cache openssl ca-certificates ;\
+    apk add --no-cache openssl pcre ca-certificates ;\
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
