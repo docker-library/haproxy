@@ -1,10 +1,11 @@
-FROM debian:jessie-backports
+# vim:set ft=dockerfile:
+FROM debian:stretch-slim
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		liblua5.3-0 \
 		libpcre3 \
-		libssl1.0.0 \
+		libssl1.1 \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV HAPROXY_MAJOR 1.7
@@ -21,6 +22,7 @@ RUN set -x \
 		liblua5.3-dev \
 		libpcre3-dev \
 		libssl-dev \
+		zlib1g-dev \
 		make \
 		wget \
 	' \

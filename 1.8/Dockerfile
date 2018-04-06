@@ -1,3 +1,4 @@
+# vim:set ft=dockerfile:
 FROM debian:stretch-slim
 
 RUN apt-get update \
