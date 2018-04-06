@@ -9,6 +9,15 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
+defaultDebianSuite='stretch-slim'
+declare -A debianSuite=(
+	[1.5]='jessie'
+)
+defaultAlpineVersion='3.7'
+declare -A alpineVersion=(
+	[1.5]='3.5'
+)
+
 travisEnv=
 for version in "${versions[@]}"; do
 	rcGrepV='-v'
@@ -26,18 +35,30 @@ for version in "${versions[@]}"; do
 			| tail -1
 	)"
 	md5="$(curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/haproxy-'"$fullVersion"'.tar.gz.md5' | cut -d' ' -f1)"
+
+	versionSuite="${debianSuite[$version]:-$defaultDebianSuite}"
+	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
 	sedExpr='
-			s/^(ENV HAPROXY_MAJOR) .*/\1 '"$rcVersion"'/;
-			s/^(ENV HAPROXY_VERSION) .*/\1 '"$fullVersion"'/;
-			s/^(ENV HAPROXY_MD5) .*/\1 '"$md5"'/;
+			s/%%ALPINE_VERSION%%/'"$alpine"'/;
+			s/%%DEBIAN_VERSION%%/'"$versionSuite"'/;
+			s/%%HAPROXY_MAJOR%%/'"$rcVersion"'/;
+			s/%%HAPROXY_VERSION%%/'"$fullVersion"'/;
+			s/%%HAPROXY_MD5%%/'"$md5"'/;
 		'
-	( set -x; sed -ri "$sedExpr" "$version/Dockerfile" )
+	( set -x; sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile" )
 	
 	for variant in alpine; do
 		[ -d "$version/$variant" ] || continue
-		( set -x; sed -ri "$sedExpr" "$version/$variant/Dockerfile" )
+		( set -x; sed -r "$sedExpr" 'Dockerfile-alpine.template' > "$version/$variant/Dockerfile" )
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
+
+	if [ "$version" = '1.5' ]; then
+		for dockerfile in "$version/Dockerfile" "$version/$variant/Dockerfile"; do
+			sed -ri -e '/lua/d' -e 's/libssl1.1/libssl1.0.0/' "$dockerfile"
+		done
+	fi
+
 	travisEnv='\n  - VERSION='"$version ARCH=i386$travisEnv"
 	travisEnv='\n  - VERSION='"$version VARIANT=$travisEnv"
 done
