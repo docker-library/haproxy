@@ -67,7 +67,6 @@ for version in "${versions[@]}"; do
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
 
-
 	travisEnv='\n  - VERSION='"$version ARCH=i386$travisEnv"
 	travisEnv='\n  - VERSION='"$version VARIANT=$travisEnv"
 done
