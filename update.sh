@@ -11,6 +11,9 @@ versions=( "${versions[@]%/}" )
 
 defaultDebianSuite='stretch-slim'
 declare -A debianSuite=(
+# 1.6 does not support libssl1.1, which is the only libssl in stretch (backports gives us liblua)
+# https://git.haproxy.org/?p=haproxy-1.7.git;a=commitdiff;h=1866d6d8f1163fe28a1e8256080909a5aa166880
+	[1.6]='jessie-backports'
 	[1.5]='jessie'
 )
 defaultAlpineVersion='3.7'
@@ -49,6 +52,10 @@ for version in "${versions[@]}"; do
 	if [ "$version" = '1.5' ]; then
 		sedExpr+='
 			/lua/d;
+		'
+	fi
+	if [[ "$versionSuite" = jessie* ]]; then
+		sedExpr+='
 			s/libssl1.1/libssl1.0.0/;
 		'
 	fi

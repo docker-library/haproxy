@@ -1,11 +1,11 @@
 # vim:set ft=dockerfile:
-FROM debian:stretch-slim
+FROM debian:jessie-backports
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		liblua5.3-0 \
 		libpcre3 \
-		libssl1.1 \
+		libssl1.0.0 \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV HAPROXY_MAJOR 1.6
