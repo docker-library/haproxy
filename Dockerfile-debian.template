@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM debian:stretch-slim
+FROM debian:%%DEBIAN_VERSION%%
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
@@ -8,9 +8,9 @@ RUN apt-get update \
 		libssl1.1 \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV HAPROXY_MAJOR 1.7
-ENV HAPROXY_VERSION 1.7.10
-ENV HAPROXY_MD5 a9b98a228660dee5ee65b62e3bd57822
+ENV HAPROXY_MAJOR %%HAPROXY_MAJOR%%
+ENV HAPROXY_VERSION %%HAPROXY_VERSION%%
+ENV HAPROXY_MD5 %%HAPROXY_MD5%%
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
