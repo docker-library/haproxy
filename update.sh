@@ -45,6 +45,13 @@ for version in "${versions[@]}"; do
 			s/%%HAPROXY_VERSION%%/'"$fullVersion"'/;
 			s/%%HAPROXY_MD5%%/'"$md5"'/;
 		'
+	
+	if [ "$version" = '1.5' ]; then
+		sedExpr+='
+			/lua/d;
+			s/libssl1.1/libssl1.0.0/;
+		'
+	fi
 	( set -x; sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile" )
 	
 	for variant in alpine; do
@@ -53,11 +60,6 @@ for version in "${versions[@]}"; do
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
 
-	if [ "$version" = '1.5' ]; then
-		for dockerfile in "$version/Dockerfile" "$version/$variant/Dockerfile"; do
-			sed -ri -e '/lua/d' -e 's/libssl1.1/libssl1.0.0/' "$dockerfile"
-		done
-	fi
 
 	travisEnv='\n  - VERSION='"$version ARCH=i386$travisEnv"
 	travisEnv='\n  - VERSION='"$version VARIANT=$travisEnv"

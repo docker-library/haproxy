@@ -22,9 +22,9 @@ RUN set -x \
 		liblua5.3-dev \
 		libpcre3-dev \
 		libssl-dev \
-		zlib1g-dev \
 		make \
 		wget \
+		zlib1g-dev \
 	' \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	\
