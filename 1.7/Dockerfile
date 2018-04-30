@@ -9,8 +9,8 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV HAPROXY_MAJOR 1.7
-ENV HAPROXY_VERSION 1.7.10
-ENV HAPROXY_MD5 a9b98a228660dee5ee65b62e3bd57822
+ENV HAPROXY_VERSION 1.7.11
+ENV HAPROXY_MD5 25be5ad717a71da89a65c3c24250e2eb
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
