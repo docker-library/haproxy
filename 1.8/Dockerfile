@@ -10,7 +10,7 @@ RUN apt-get update \
 
 ENV HAPROXY_MAJOR 1.8
 ENV HAPROXY_VERSION 1.8.12
-ENV HAPROXY_MD5 9f37013ec1e76942a67a9f7c067af9f2
+ENV HAPROXY_SHA256 f438a98e657935fa8fad48b98d9029a399e0ad9105cf0e7e8e54365f93d83e9b
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
@@ -29,7 +29,7 @@ RUN set -x \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	\
 	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
-	&& echo "$HAPROXY_MD5 *haproxy.tar.gz" | md5sum -c \
+	&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
 	&& rm haproxy.tar.gz \

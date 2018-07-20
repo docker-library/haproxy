@@ -37,7 +37,7 @@ for version in "${versions[@]}"; do
 			| sort -V \
 			| tail -1
 	)"
-	md5="$(curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/haproxy-'"$fullVersion"'.tar.gz.md5' | cut -d' ' -f1)"
+	sha256="$(curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/haproxy-'"$fullVersion"'.tar.gz.sha256' | cut -d' ' -f1)"
 
 	versionSuite="${debianSuite[$version]:-$defaultDebianSuite}"
 	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
@@ -46,7 +46,7 @@ for version in "${versions[@]}"; do
 			s/%%DEBIAN_VERSION%%/'"$versionSuite"'/;
 			s/%%HAPROXY_MAJOR%%/'"$rcVersion"'/;
 			s/%%HAPROXY_VERSION%%/'"$fullVersion"'/;
-			s/%%HAPROXY_MD5%%/'"$md5"'/;
+			s/%%HAPROXY_SHA256%%/'"$sha256"'/;
 		'
 	
 	if [ "$version" = '1.5' ]; then

@@ -3,7 +3,7 @@ FROM alpine:3.7
 
 ENV HAPROXY_MAJOR 1.7
 ENV HAPROXY_VERSION 1.7.11
-ENV HAPROXY_MD5 25be5ad717a71da89a65c3c24250e2eb
+ENV HAPROXY_SHA256 d564b8e9429d1e8e13cb648bf4694926b472e36da1079df946bb732927b232ea
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
@@ -24,7 +24,7 @@ RUN set -x \
 	\
 # install HAProxy
 	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
-	&& echo "$HAPROXY_MD5 *haproxy.tar.gz" | md5sum -c \
+	&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
 	&& rm haproxy.tar.gz \
