@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM alpine:3.5
+FROM alpine:3.8
 
 ENV HAPROXY_MAJOR 1.5
 ENV HAPROXY_VERSION 1.5.19
