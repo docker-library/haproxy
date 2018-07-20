@@ -11,10 +11,8 @@ versions=( "${versions[@]%/}" )
 
 defaultDebianSuite='stretch-slim'
 declare -A debianSuite=(
-# 1.6 does not support libssl1.1, which is the only libssl in stretch (backports gives us liblua)
-# https://git.haproxy.org/?p=haproxy-1.7.git;a=commitdiff;h=1866d6d8f1163fe28a1e8256080909a5aa166880
-	[1.6]='jessie-backports'
-	[1.5]='jessie'
+	#[1.6]='jessie-backports'
+	#[1.5]='jessie'
 )
 defaultAlpineVersion='3.8'
 declare -A alpineVersion=(
@@ -48,15 +46,17 @@ for version in "${versions[@]}"; do
 			s/%%HAPROXY_VERSION%%/'"$fullVersion"'/;
 			s/%%HAPROXY_SHA256%%/'"$sha256"'/;
 		'
-	
+
 	if [ "$version" = '1.5' ]; then
 		sedExpr+='
 			/lua/d;
 		'
 	fi
-	if [[ "$versionSuite" = jessie* ]]; then
+	if [ "$version" = 1.5 ] || [ "$version" = 1.6 ]; then
+		# libssl1.1 is not supported until 1.7+
+		# https://git.haproxy.org/?p=haproxy-1.7.git;a=commitdiff;h=1866d6d8f1163fe28a1e8256080909a5aa166880
 		sedExpr+='
-			s/libssl1.1/libssl1.0.0/;
+			s/libssl-dev/libssl1.0-dev/;
 		'
 	fi
 	( set -x; sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile" )

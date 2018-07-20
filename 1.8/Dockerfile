@@ -1,13 +1,6 @@
 # vim:set ft=dockerfile:
 FROM debian:stretch-slim
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-		liblua5.3-0 \
-		libpcre3 \
-		libssl1.1 \
-	&& rm -rf /var/lib/apt/lists/*
-
 ENV HAPROXY_MAJOR 1.8
 ENV HAPROXY_VERSION 1.8.12
 ENV HAPROXY_SHA256 f438a98e657935fa8fad48b98d9029a399e0ad9105cf0e7e8e54365f93d83e9b
@@ -15,7 +8,8 @@ ENV HAPROXY_SHA256 f438a98e657935fa8fad48b98d9029a399e0ad9105cf0e7e8e54365f93d83
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	\
-	&& buildDeps=' \
+	&& savedAptMark="$(apt-mark showmanual)" \
+	&& apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gcc \
 		libc6-dev \
@@ -25,8 +19,7 @@ RUN set -x \
 		make \
 		wget \
 		zlib1g-dev \
-	' \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
+	&& rm -rf /var/lib/apt/lists/* \
 	\
 	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
 	&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
@@ -48,7 +41,16 @@ RUN set -x \
 	&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \
 	&& rm -rf /usr/src/haproxy \
 	\
-	&& apt-get purge -y --auto-remove $buildDeps
+	&& apt-mark auto '.*' > /dev/null \
+	&& { [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; } \
+	&& find /usr/local -type f -executable -exec ldd '{}' ';' \
+		| awk '/=>/ { print $(NF-1) }' \
+		| sort -u \
+		| xargs -r dpkg-query --search \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -r apt-mark manual \
+	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
