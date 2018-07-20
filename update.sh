@@ -16,9 +16,9 @@ declare -A debianSuite=(
 	[1.6]='jessie-backports'
 	[1.5]='jessie'
 )
-defaultAlpineVersion='3.7'
+defaultAlpineVersion='3.8'
 declare -A alpineVersion=(
-	[1.5]='3.5'
+	#[1.5]='3.5'
 )
 
 travisEnv=
