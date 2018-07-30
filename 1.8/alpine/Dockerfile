@@ -2,8 +2,8 @@
 FROM alpine:3.8
 
 ENV HAPROXY_MAJOR 1.8
-ENV HAPROXY_VERSION 1.8.12
-ENV HAPROXY_SHA256 f438a98e657935fa8fad48b98d9029a399e0ad9105cf0e7e8e54365f93d83e9b
+ENV HAPROXY_VERSION 1.8.13
+ENV HAPROXY_SHA256 2bf5dafbb5f1530c0e67ab63666565de948591f8e0ee2a1d3c84c45e738220f1
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
