@@ -53,3 +53,4 @@ RUN set -x \
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+STOPSIGNAL SIGUSR1
