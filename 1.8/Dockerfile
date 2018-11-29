@@ -1,8 +1,8 @@
 # vim:set ft=dockerfile:
 FROM debian:stretch-slim
 
-ENV HAPROXY_MAJOR 1.8
 ENV HAPROXY_VERSION 1.8.14
+ENV HAPROXY_URL https://www.haproxy.org/download/1.8/src/haproxy-1.8.14.tar.gz
 ENV HAPROXY_SHA256 b17e402578be85e58af7a3eac99b1f675953bea9f67af2e964cf8bdbd1bd3fdf
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
@@ -21,7 +21,7 @@ RUN set -x \
 		zlib1g-dev \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
-	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
+	&& wget -O haproxy.tar.gz "$HAPROXY_URL" \
 	&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
