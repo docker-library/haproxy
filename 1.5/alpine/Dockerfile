@@ -1,8 +1,8 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.8
 
-ENV HAPROXY_MAJOR 1.5
 ENV HAPROXY_VERSION 1.5.19
+ENV HAPROXY_URL https://www.haproxy.org/download/1.5/src/haproxy-1.5.19.tar.gz
 ENV HAPROXY_SHA256 e00ae2a633da614967f2e3ebebdb817ec537cba8383b833fc8d9a506876e0d5e
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
@@ -21,8 +21,7 @@ RUN set -x \
 		tar \
 		zlib-dev \
 	\
-# install HAProxy
-	&& wget -O haproxy.tar.gz "https://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" \
+	&& wget -O haproxy.tar.gz "$HAPROXY_URL" \
 	&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \

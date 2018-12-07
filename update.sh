@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -Eeuo pipefail
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
@@ -28,22 +28,34 @@ for version in "${versions[@]}"; do
 	fi
 
 	fullVersion="$(
-		curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/' \
-			| grep '<a href="haproxy-'"$version"'.*\.tar\.gz"' \
-			| grep $rcGrepV -E 'rc' \
-			| sed -r 's!.*<a href="haproxy-([^"/]+)\.tar\.gz".*!\1!' \
+		{
+			curl -fsSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/'
+			if [ "$rcVersion" != "$version" ]; then
+				curl -fsSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/devel/'
+			fi
+		} \
+			| grep -o '<a href="haproxy-'"$rcVersion"'[^"/]*\.tar\.gz"' \
+			| sed -r 's!^<a href="haproxy-([^"/]+)\.tar\.gz"$!\1!' \
+			| grep $rcGrepV -E 'rc|dev' \
 			| sort -V \
 			| tail -1
 	)"
-	sha256="$(curl -sSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/haproxy-'"$fullVersion"'.tar.gz.sha256' | cut -d' ' -f1)"
+	url="https://www.haproxy.org/download/$rcVersion/src"
+	if [[ "$fullVersion" == *dev* ]]; then
+		url+='/devel'
+	fi
+	url+="/haproxy-$fullVersion.tar.gz"
+	sha256="$(curl -fsSL --compressed "$url.sha256" | cut -d' ' -f1)"
+
+	echo "$version: $fullVersion ($sha256, $url)"
 
 	versionSuite="${debianSuite[$version]:-$defaultDebianSuite}"
 	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
 	sedExpr='
 			s/%%ALPINE_VERSION%%/'"$alpine"'/;
 			s/%%DEBIAN_VERSION%%/'"$versionSuite"'/;
-			s/%%HAPROXY_MAJOR%%/'"$rcVersion"'/;
 			s/%%HAPROXY_VERSION%%/'"$fullVersion"'/;
+			s!%%HAPROXY_URL%%!'"$url"'!;
 			s/%%HAPROXY_SHA256%%/'"$sha256"'/;
 		'
 
@@ -59,11 +71,11 @@ for version in "${versions[@]}"; do
 			s/libssl-dev/libssl1.0-dev/;
 		'
 	fi
-	( set -x; sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile" )
-	
+	sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile"
+
 	for variant in alpine; do
 		[ -d "$version/$variant" ] || continue
-		( set -x; sed -r "$sedExpr" 'Dockerfile-alpine.template' > "$version/$variant/Dockerfile" )
+		sed -r "$sedExpr" 'Dockerfile-alpine.template' > "$version/$variant/Dockerfile"
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
 
