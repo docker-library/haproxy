@@ -1,0 +1,78 @@
+# vim:set ft=dockerfile:
+FROM debian:stretch-slim
+
+ENV HAPROXY_VERSION 1.9.1
+ENV HAPROXY_URL https://www.haproxy.org/download/1.9/src/haproxy-1.9.1.tar.gz
+ENV HAPROXY_SHA256 ad46312fa1e38763863807d2c9304551c28ad91cff83f0c21a36756913c1c8e1
+ENV OPENSSL_URL https://www.openssl.org/source/openssl-1.1.1a.tar.gz
+ENV OPENSSL_SHA256 fc20130f8b7cbd2fb918b2f14e2f429e109c31ddd0fb38fc5d71d9ffed3f9f41
+ENV DOCKERENTRY_URL https://raw.githubusercontent.com/docker-library/haproxy/7a79c7cdad7e2b1e81bd342b7bc0204027b8f326/1.9/docker-entrypoint.sh
+ENV DOCKERENTRY_SHA256 c00dac60746792e7132ca8cc1886dcc92a60d18ccbcc08669d42d9217274b01a
+ARG LD_LIBRARY_PATH=/opt/openssl-1.1.1/lib/
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+# see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
+RUN set -x \
+&& savedAptMark="$(apt-mark showmanual)" \
+&& apt-get update \
+&& apt-get install -y --no-install-recommends \
+		ca-certificates \
+		build-essential \
+		gcc \
+		libc6-dev \
+		liblua5.3-dev \
+		libpcre3-dev \
+		libssl-dev \
+		make \
+		wget \
+		zlib1g-dev \
+&& rm -rf /var/lib/apt/lists/* \
+&& wget -O haproxy.tar.gz "$HAPROXY_URL" \
+&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
+&& wget -O openssl.tar.gz "$OPENSSL_URL" \
+&& echo "$OPENSSL_SHA256 *openssl.tar.gz" | sha256sum -c \
+&& wget -O /docker-entrypoint.sh "$DOCKERENTRY_URL" \
+&& echo "$DOCKERENTRY_SHA256 docker-entrypoint.sh" | sha256sum -c \
+&& chmod +x /docker-entrypoint.sh \
+&& mkdir -p /usr/src/haproxy \
+&& rm -rf /usr/src/openssl \
+&& mkdir -p /usr/src/openssl \
+&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
+&& tar -xzf openssl.tar.gz -C /usr/src/openssl \
+&& rm haproxy.tar.gz \
+&& rm openssl.tar.gz \
+&& cd /usr/src/openssl/openssl-1.1.1a \
+&& ./config --prefix=/opt/openssl-1.1.1 shared shared \
+&& make \ 
+&& make install \
+&& makeOpts=' \
+		TARGET=linux2628 \
+		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
+		USE_OPENSSL=1 \
+		USE_PCRE=1 PCREDIR= \
+		USE_ZLIB=1 \
+        	SSL_LIB=/opt/openssl-1.1.1a/lib \
+	        SSL_INC=/opt/openssl-1.1.1a/include \
+	'\
+&& make -C /usr/src/haproxy -j "$(nproc)" all $makeOpts \
+&& make -C /usr/src/haproxy install-bin $makeOpts \
+&& mkdir -p /usr/local/etc/haproxy \
+&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \
+&& rm -rf /usr/src/haproxy \
+&& apt-mark auto '.*' > /dev/null \
+&& { [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; } \
+&& find /usr/local -type f -executable -exec ldd '{}' ';' \
+		| awk '/=>/ { print $(NF-1) }' \
+		| sort -u \
+		| xargs -r dpkg-query --search \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -r apt-mark manual \
+&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
+
+# https://www.haproxy.org/download/1.8/doc/management.txt
+# "4. Stopping and restarting HAProxy"
+# "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
+# "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
+STOPSIGNAL SIGUSR1
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
