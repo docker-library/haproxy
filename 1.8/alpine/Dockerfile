@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.9
 
-ENV HAPROXY_VERSION 1.8.19
-ENV HAPROXY_URL https://www.haproxy.org/download/1.8/src/haproxy-1.8.19.tar.gz
-ENV HAPROXY_SHA256 64f5fbfd4e09ffeaf26cb6667398ba780704a14e96e60000caa8bf69962ba734
+ENV HAPROXY_VERSION 1.8.20
+ENV HAPROXY_URL https://www.haproxy.org/download/1.8/src/haproxy-1.8.20.tar.gz
+ENV HAPROXY_SHA256 3228f78d5fe1dfbaccf41bf387e36b08eeef6e16330053cafde5fa303e262b16
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
