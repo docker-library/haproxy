@@ -2,6 +2,9 @@ language: bash
 services: docker
 
 env:
+  - VERSION=2.0-rc VARIANT=
+  - VERSION=2.0-rc ARCH=i386
+  - VERSION=2.0-rc VARIANT=alpine
   - VERSION=1.9 VARIANT=
   - VERSION=1.9 ARCH=i386
   - VERSION=1.9 VARIANT=alpine
