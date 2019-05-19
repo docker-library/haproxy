@@ -28,6 +28,7 @@ RUN set -x \
 	\
 	&& makeOpts=' \
 		TARGET=linux2628 \
+		USE_GETADDRINFO=1 \
 		USE_OPENSSL=1 \
 		USE_PCRE=1 PCREDIR= \
 		USE_ZLIB=1 \

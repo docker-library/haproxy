@@ -31,6 +31,7 @@ RUN set -x \
 	&& makeOpts=' \
 		TARGET=linux2628 \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \
+		USE_GETADDRINFO=1 \
 		USE_OPENSSL=1 \
 		USE_PCRE=1 PCREDIR= \
 		USE_ZLIB=1 \
