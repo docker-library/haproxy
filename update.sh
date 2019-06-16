@@ -72,6 +72,11 @@ for version in "${versions[@]}"; do
 			s/libssl-dev/libssl1.0-dev/;
 		'
 	fi
+	if [[ "$version" = 1.* ]]; then
+		sedExpr+='
+			s/linux-glibc/linux2628/;
+		'
+	fi
 	sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile"
 
 	for variant in alpine; do
