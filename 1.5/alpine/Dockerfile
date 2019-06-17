@@ -16,7 +16,7 @@ RUN set -x \
 		make \
 		openssl \
 		openssl-dev \
-		pcre-dev \
+		pcre2-dev \
 		readline-dev \
 		tar \
 		zlib-dev \
@@ -31,7 +31,7 @@ RUN set -x \
 		TARGET=linux2628 \
 		USE_GETADDRINFO=1 \
 		USE_OPENSSL=1 \
-		USE_PCRE=1 PCREDIR= \
+		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
 	' \
 	&& make -C /usr/src/haproxy -j "$(getconf _NPROCESSORS_ONLN)" all $makeOpts \
