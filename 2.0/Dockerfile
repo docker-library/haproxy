@@ -14,7 +14,7 @@ RUN set -x \
 		gcc \
 		libc6-dev \
 		liblua5.3-dev \
-		libpcre3-dev \
+		libpcre2-dev \
 		libssl-dev \
 		make \
 		wget \
@@ -32,7 +32,7 @@ RUN set -x \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
 		USE_GETADDRINFO=1 \
 		USE_OPENSSL=1 \
-		USE_PCRE=1 PCREDIR= \
+		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
 	' \
 	&& make -C /usr/src/haproxy -j "$(nproc)" all $makeOpts \
