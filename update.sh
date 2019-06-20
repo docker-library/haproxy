@@ -14,7 +14,7 @@ declare -A debianSuite=(
 	#[1.6]='jessie-backports'
 	#[1.5]='jessie'
 )
-defaultAlpineVersion='3.9'
+defaultAlpineVersion='3.10'
 declare -A alpineVersion=(
 	[1.5]='3.8'
 	[1.6]='3.8'
