@@ -33,9 +33,13 @@ RUN set -x \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
+		\
+		EXTRA_OBJS=" \
+		" \
 	' \
-	&& make -C /usr/src/haproxy -j "$(getconf _NPROCESSORS_ONLN)" all $makeOpts \
-	&& make -C /usr/src/haproxy install-bin $makeOpts \
+	&& nproc="$(getconf _NPROCESSORS_ONLN)" \
+	&& eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts" \
+	&& eval "make -C /usr/src/haproxy install-bin $makeOpts" \
 	\
 	&& mkdir -p /usr/local/etc/haproxy \
 	&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \

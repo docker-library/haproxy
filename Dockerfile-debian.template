@@ -29,14 +29,20 @@ RUN set -x \
 	\
 	&& makeOpts=' \
 		TARGET=linux-glibc \
-		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
 		USE_GETADDRINFO=1 \
+		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
+		\
+		EXTRA_OBJS=" \
+# see https://github.com/docker-library/haproxy/issues/94#issuecomment-505673353 for more details about prometheus support
+			contrib/prometheus-exporter/service-prometheus.o \
+		" \
 	' \
-	&& make -C /usr/src/haproxy -j "$(nproc)" all $makeOpts \
-	&& make -C /usr/src/haproxy install-bin $makeOpts \
+	&& nproc="$(nproc)" \
+	&& eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts" \
+	&& eval "make -C /usr/src/haproxy install-bin $makeOpts" \
 	\
 	&& mkdir -p /usr/local/etc/haproxy \
 	&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \

@@ -75,6 +75,7 @@ for version in "${versions[@]}"; do
 	if [[ "$version" = 1.* ]]; then
 		sedExpr+='
 			s/linux-glibc/linux2628/;
+			/prometheus/d;
 		'
 	fi
 	sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile"
