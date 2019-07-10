@@ -9,10 +9,10 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
-defaultDebianSuite='stretch-slim'
+defaultDebianSuite='buster-slim'
 declare -A debianSuite=(
-	#[1.6]='jessie-backports'
-	#[1.5]='jessie'
+	[1.6]='stretch-slim'
+	[1.5]='stretch-slim'
 )
 defaultAlpineVersion='3.10'
 declare -A alpineVersion=(
