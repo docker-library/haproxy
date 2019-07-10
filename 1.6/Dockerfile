@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 ENV HAPROXY_VERSION 1.6.14
 ENV HAPROXY_URL https://www.haproxy.org/download/1.6/src/haproxy-1.6.14.tar.gz
