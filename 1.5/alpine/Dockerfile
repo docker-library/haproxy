@@ -51,8 +51,8 @@ RUN set -x \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)" \
-	&& apk add --virtual .haproxy-rundeps $runDeps \
-	&& apk del .build-deps
+	&& apk add --no-network --virtual .haproxy-rundeps $runDeps \
+	&& apk del --no-network .build-deps
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
