@@ -82,6 +82,11 @@ for version in "${versions[@]}"; do
 
 	for variant in alpine; do
 		[ -d "$version/$variant" ] || continue
+		if [ "$version" = '1.7' ]; then
+			sedExpr+='
+				/makeOpts=/a \\t\tCFLAGS+="-Wno-address-of-packed-member" \\
+			'
+		fi
 		sed -r "$sedExpr" 'Dockerfile-alpine.template' > "$version/$variant/Dockerfile"
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
