@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM alpine:3.10
+FROM alpine:3.11
 
 ENV HAPROXY_VERSION 1.7.12
 ENV HAPROXY_URL https://www.haproxy.org/download/1.7/src/haproxy-1.7.12.tar.gz
@@ -29,6 +29,7 @@ RUN set -x \
 	&& rm haproxy.tar.gz \
 	\
 	&& makeOpts=' \
+		CFLAGS+="-Wno-address-of-packed-member" \
 		TARGET=linux2628 \
 		USE_GETADDRINFO=1 \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \

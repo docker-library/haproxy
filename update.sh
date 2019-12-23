@@ -14,7 +14,7 @@ declare -A debianSuite=(
 	[1.6]='stretch-slim'
 	[1.5]='stretch-slim'
 )
-defaultAlpineVersion='3.10'
+defaultAlpineVersion='3.11'
 declare -A alpineVersion=(
 	[1.5]='3.8'
 	[1.6]='3.8'
@@ -82,6 +82,11 @@ for version in "${versions[@]}"; do
 
 	for variant in alpine; do
 		[ -d "$version/$variant" ] || continue
+		if [ "$version" = '1.7' ]; then
+			sedExpr+='
+				/makeOpts=/a \\t\tCFLAGS+="-Wno-address-of-packed-member" \\
+			'
+		fi
 		sed -r "$sedExpr" 'Dockerfile-alpine.template' > "$version/$variant/Dockerfile"
 		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
