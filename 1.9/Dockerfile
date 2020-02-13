@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
 FROM debian:buster-slim
 
-ENV HAPROXY_VERSION 1.9.13
-ENV HAPROXY_URL https://www.haproxy.org/download/1.9/src/haproxy-1.9.13.tar.gz
-ENV HAPROXY_SHA256 adae40f963b03df0917edc44681064627f77683dcf7db66ef030672ad6d00547
+ENV HAPROXY_VERSION 1.9.14
+ENV HAPROXY_URL https://www.haproxy.org/download/1.9/src/haproxy-1.9.14.tar.gz
+ENV HAPROXY_SHA256 d4bd6c58547cfd282feaef195d816b26145be19e494bf3486bb7187f7982296f
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
