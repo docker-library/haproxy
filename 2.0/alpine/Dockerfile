@@ -35,8 +35,6 @@ RUN set -x \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
-# USE_BACKTRACE is enabled by default on the linux-glibc target, but does not work with musl
-		USE_BACKTRACE= \
 		\
 		EXTRA_OBJS=" \
 # see https://github.com/docker-library/haproxy/issues/94#issuecomment-505673353 for more details about prometheus support
