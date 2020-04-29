@@ -18,7 +18,6 @@ declare -A alpineVersion=(
 	[1.6]='3.8'
 )
 
-travisEnv=
 for version in "${versions[@]}"; do
 	rcGrepV='-v'
 	rcVersion="${version%-rc}"
@@ -87,12 +86,5 @@ for version in "${versions[@]}"; do
 			'
 		fi
 		sed -r "$sedExpr" 'Dockerfile-alpine.template' > "$version/$variant/Dockerfile"
-		travisEnv='\n  - VERSION='"$version VARIANT=$variant$travisEnv"
 	done
-
-	travisEnv='\n  - VERSION='"$version ARCH=i386$travisEnv"
-	travisEnv='\n  - VERSION='"$version VARIANT=$travisEnv"
 done
-
-travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
-echo "$travis" > .travis.yml
