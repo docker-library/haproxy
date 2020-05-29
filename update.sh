@@ -71,7 +71,7 @@ for version in "${versions[@]}"; do
 			/prometheus/d;
 		'
 	fi
-	if [[ "$version" =~ 2.[01] ]]; then
+	if [ "$version" = '2.0' ]; then
 		sedExpr+='
 			s/linux-musl/linux-glibc/;
 		'
