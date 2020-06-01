@@ -11,11 +11,11 @@ versions=( "${versions[@]%/}" )
 
 defaultDebianSuite='buster-slim'
 declare -A debianSuite=(
-	[1.6]='stretch-slim'
+	#[1.6]='stretch-slim'
 )
 defaultAlpineVersion='3.11'
 declare -A alpineVersion=(
-	[1.6]='3.8'
+	#[1.6]='3.8'
 )
 
 for version in "${versions[@]}"; do
@@ -57,13 +57,6 @@ for version in "${versions[@]}"; do
 			s/%%HAPROXY_SHA256%%/'"$sha256"'/;
 		'
 
-	if [ "$version" = 1.6 ]; then
-		# libssl1.1 is not supported until 1.7+
-		# https://git.haproxy.org/?p=haproxy-1.7.git;a=commitdiff;h=1866d6d8f1163fe28a1e8256080909a5aa166880
-		sedExpr+='
-			s/libssl-dev/libssl1.0-dev/;
-		'
-	fi
 	if [[ "$version" = 1.* ]]; then
 		sedExpr+='
 			s/linux-glibc/linux2628/;
