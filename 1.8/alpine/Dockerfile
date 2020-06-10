@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM alpine:3.11
+FROM alpine:3.12
 
 ENV HAPROXY_VERSION 1.8.25
 ENV HAPROXY_URL https://www.haproxy.org/download/1.8/src/haproxy-1.8.25.tar.gz
