@@ -13,7 +13,7 @@ defaultDebianSuite='buster-slim'
 declare -A debianSuite=(
 	#[1.6]='stretch-slim'
 )
-defaultAlpineVersion='3.11'
+defaultAlpineVersion='3.12'
 declare -A alpineVersion=(
 	#[1.6]='3.8'
 )
