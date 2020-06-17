@@ -9,7 +9,6 @@ ENV HAPROXY_SHA256 62c0b77de2275a54a443a869947ddcca2bad7bdc1cafd804732a0e0d59b17
 RUN set -x \
 	\
 	&& apk add --no-cache --virtual .build-deps \
-		ca-certificates \
 		gcc \
 		libc-dev \
 		linux-headers \
