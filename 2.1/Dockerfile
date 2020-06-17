@@ -12,6 +12,7 @@ RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gcc \
+		iproute2 \
 		libc6-dev \
 		liblua5.3-dev \
 		libpcre2-dev \
