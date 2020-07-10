@@ -70,9 +70,15 @@ join() {
 }
 
 for version in "${versions[@]}"; do
-	commit="$(dirCommit "$version")"
+	dir="$version"
+	commit="$(dirCommit "$dir")"
 
-	fullVersion="$(git show "$commit":"$version/Dockerfile" | awk '$1 == "ENV" && $2 == "HAPROXY_VERSION" { print $3; exit }')"
+	fullVersion="$(git show "$commit":"$dir/Dockerfile" | awk '$1 == "ENV" && $2 == "HAPROXY_VERSION" { print $3; exit }')"
+
+	# dcorbett(-haproxy): maybe just a simple "-dev" without the 0 which always follows the latest dev branch
+	if [[ "$version" == *-rc ]] && [[ "$fullVersion" == *-dev* ]]; then
+		version="${version%-rc}-dev"
+	fi
 
 	versionAliases=(
 		$fullVersion
@@ -80,7 +86,7 @@ for version in "${versions[@]}"; do
 		${aliases[$version]:-}
 	)
 
-	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/Dockerfile")"
+	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$dir/Dockerfile")"
 	arches="${parentRepoToArches[$parent]}"
 
 	echo
@@ -88,18 +94,18 @@ for version in "${versions[@]}"; do
 		Tags: $(join ', ' "${versionAliases[@]}")
 		Architectures: $(join ', ' $arches)
 		GitCommit: $commit
-		Directory: $version
+		Directory: $dir
 	EOE
 
 	for variant in alpine; do
-		[ -f "$version/$variant/Dockerfile" ] || continue
+		[ -f "$dir/$variant/Dockerfile" ] || continue
 
-		commit="$(dirCommit "$version/$variant")"
+		commit="$(dirCommit "$dir/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-$variant}" )
 		variantAliases=( "${variantAliases[@]//latest-/}" )
 
-		variantParent="$(awk 'toupper($1) == "FROM" { print $2 }' "$version/$variant/Dockerfile")"
+		variantParent="$(awk 'toupper($1) == "FROM" { print $2 }' "$dir/$variant/Dockerfile")"
 		variantArches="${parentRepoToArches[$variantParent]}"
 
 		echo
@@ -107,7 +113,7 @@ for version in "${versions[@]}"; do
 			Tags: $(join ', ' "${variantAliases[@]}")
 			Architectures: $(join ', ' $variantArches)
 			GitCommit: $commit
-			Directory: $version/$variant
+			Directory: $dir/$variant
 		EOE
 	done
 done
