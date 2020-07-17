@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.12
 
-ENV HAPROXY_VERSION 2.0.15
-ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.15.tar.gz
-ENV HAPROXY_SHA256 6e21c6b92d4035ee006ef18e25f396d7e71552a6d3a1e075fa9fe59d89eaaeee
+ENV HAPROXY_VERSION 2.0.16
+ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.16.tar.gz
+ENV HAPROXY_SHA256 8eda217f3bf82f7ad6353bfd0c2005c4ac2da6cdca0398cf98de0016cdb97385
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
@@ -26,6 +26,10 @@ RUN set -x \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
 	&& rm haproxy.tar.gz \
+# https://github.com/haproxy/haproxy/issues/760 ("ebtree/ebtree.c:43:2: error: unknown type name 'ssize_t'; did you mean 'size_t'?")
+	&& ! grep -qF 'unistd.h' /usr/src/haproxy/ebtree/ebtree.c \
+	&& awk '$1 == "#include" && !inc { print "#include <unistd.h>"; inc = 1 } { print }' /usr/src/haproxy/ebtree/ebtree.c > ebtree.c \
+	&& mv ebtree.c /usr/src/haproxy/ebtree/ebtree.c \
 	\
 	&& makeOpts=' \
 		TARGET=linux-glibc \
