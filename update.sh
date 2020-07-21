@@ -71,6 +71,7 @@ for version in "${versions[@]}"; do
 	else
 		sedExpr+='
 			/ebtree/d
+			/patch/d
 		'
 	fi
 	sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile"
