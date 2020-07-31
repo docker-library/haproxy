@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.12
 
-ENV HAPROXY_VERSION 2.0.16
-ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.16.tar.gz
-ENV HAPROXY_SHA256 8eda217f3bf82f7ad6353bfd0c2005c4ac2da6cdca0398cf98de0016cdb97385
+ENV HAPROXY_VERSION 2.0.17
+ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.17.tar.gz
+ENV HAPROXY_SHA256 e7e2d14a75cbe65f1ab8f7dad092b1ffae36a82436c55accd27530258fe4b194
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
@@ -16,7 +16,6 @@ RUN set -x \
 		make \
 		openssl \
 		openssl-dev \
-		patch \
 		pcre2-dev \
 		readline-dev \
 		tar \
@@ -27,11 +26,6 @@ RUN set -x \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
 	&& rm haproxy.tar.gz \
-# https://github.com/haproxy/haproxy/issues/760 ("ebtree/ebtree.c:43:2: error: unknown type name 'ssize_t'; did you mean 'size_t'?")
-#   ebtree patch/fix: https://git.haproxy.org/?p=haproxy-2.0.git;a=commit;h=5df32b51bb0c3c89b503d04cd7d31bdd77932370
-	&& wget -O ebtree.patch 'https://git.haproxy.org/?p=haproxy-2.0.git;a=patch;h=5df32b51bb0c3c89b503d04cd7d31bdd77932370' \
-	&& patch -p1 --input="$PWD/ebtree.patch" --directory=/usr/src/haproxy \
-	&& rm ebtree.patch \
 	\
 	&& makeOpts=' \
 		TARGET=linux-glibc \
