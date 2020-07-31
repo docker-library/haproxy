@@ -3,7 +3,6 @@ set -Eeuo pipefail
 
 # https://www.haproxy.org/#down ("LTS" vs "latest")
 declare -A aliases=(
-	[1.9]='1'
 	[2.2]='latest lts'
 )
 
