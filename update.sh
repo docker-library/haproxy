@@ -68,11 +68,6 @@ for version in "${versions[@]}"; do
 		sedExpr+='
 			s/linux-musl/linux-glibc/;
 		'
-	else
-		sedExpr+='
-			/ebtree/d
-			/patch/d
-		'
 	fi
 	sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile"
 

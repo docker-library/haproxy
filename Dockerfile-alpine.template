@@ -16,7 +16,6 @@ RUN set -x \
 		make \
 		openssl \
 		openssl-dev \
-		patch \
 		pcre2-dev \
 		readline-dev \
 		tar \
@@ -27,11 +26,6 @@ RUN set -x \
 	&& mkdir -p /usr/src/haproxy \
 	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
 	&& rm haproxy.tar.gz \
-# https://github.com/haproxy/haproxy/issues/760 ("ebtree/ebtree.c:43:2: error: unknown type name 'ssize_t'; did you mean 'size_t'?")
-#   ebtree patch/fix: https://git.haproxy.org/?p=haproxy-2.0.git;a=commit;h=5df32b51bb0c3c89b503d04cd7d31bdd77932370
-	&& wget -O ebtree.patch 'https://git.haproxy.org/?p=haproxy-2.0.git;a=patch;h=5df32b51bb0c3c89b503d04cd7d31bdd77932370' \
-	&& patch -p1 --input="$PWD/ebtree.patch" --directory=/usr/src/haproxy \
-	&& rm ebtree.patch \
 	\
 	&& makeOpts=' \
 		TARGET=linux-musl \
