@@ -3,7 +3,8 @@ set -Eeuo pipefail
 
 # https://www.haproxy.org/#down ("LTS" vs "latest")
 declare -A aliases=(
-	[2.2]='latest lts'
+	[2.2]='lts'
+	[2.3]='latest'
 )
 
 self="$(basename "$BASH_SOURCE")"
