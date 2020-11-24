@@ -1,6 +1,17 @@
 # vim:set ft=dockerfile:
 FROM debian:buster-slim
 
+# roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
+RUN set -eux; \
+	groupadd --gid 99 --system haproxy; \
+	useradd \
+		--gid haproxy \
+		--home-dir /var/lib/haproxy \
+		--no-create-home \
+		--system \
+		--uid 99 \
+		haproxy
+
 ENV HAPROXY_VERSION 1.8.27
 ENV HAPROXY_URL https://www.haproxy.org/download/1.8/src/haproxy-1.8.27.tar.gz
 ENV HAPROXY_SHA256 56ba6a21e13215fae56472ad37d5d68c3f19bde9da94c59e70b869eecf48bf50
@@ -71,6 +82,8 @@ RUN set -eux; \
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]

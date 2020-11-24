@@ -1,6 +1,18 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.12
 
+# roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
+RUN set -eux; \
+	addgroup --gid 99 --system haproxy; \
+	adduser \
+		--disabled-password \
+		--home /var/lib/haproxy \
+		--ingroup haproxy \
+		--no-create-home \
+		--system \
+		--uid 99 \
+		haproxy
+
 ENV HAPROXY_VERSION 2.0.19
 ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.19.tar.gz
 ENV HAPROXY_SHA256 dcc444ac0aca0917e289653134333f7c29d05d844e6cd60dd04e23b5ff80c92d
@@ -63,6 +75,8 @@ RUN set -x \
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
