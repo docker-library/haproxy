@@ -69,6 +69,19 @@ for version in "${versions[@]}"; do
 			s/linux-musl/linux-glibc/;
 		'
 	fi
+	case "$version" in
+		1.* | 2.0 | 2.1 | 2.2 | 2.3)
+			# backwards compatibility (to try to avoid breaking existing users)
+			sedExpr+='
+				/^USER /d
+			'
+			;;
+		*)
+			sedExpr+='
+				/backwards compat/d
+			'
+			;;
+	esac
 	sed -r "$sedExpr" 'Dockerfile-debian.template' > "$version/Dockerfile"
 
 	for variant in alpine; do
