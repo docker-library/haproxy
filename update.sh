@@ -13,9 +13,9 @@ defaultDebianSuite='buster-slim'
 declare -A debianSuite=(
 	#[1.6]='stretch-slim'
 )
-defaultAlpineVersion='3.12'
+defaultAlpineVersion='3.13'
 declare -A alpineVersion=(
-	#[1.6]='3.8'
+	[1.7]='3.12'
 )
 
 for version in "${versions[@]}"; do
