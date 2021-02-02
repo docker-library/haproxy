@@ -56,6 +56,7 @@ RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
 		armel) makeOpts="$makeOpts ADDLIB=-latomic" ;; \
+		arm64) makeOpts="$makeOpts CPU=native" ;; \
 	esac; \
 	\
 	nproc="$(nproc)"; \
