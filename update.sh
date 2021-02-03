@@ -15,6 +15,9 @@ declare -A debianSuite=(
 )
 defaultAlpineVersion='3.13'
 declare -A alpineVersion=(
+	# Alpine 3.13 upgraded to GCC 10, so 1.7 fails:
+	# multiple definition of `pool2_trash'; src/haproxy.o:(.bss+0x0): first defined here
+	# collect2: error: ld returned 1 exit status
 	[1.7]='3.12'
 )
 
