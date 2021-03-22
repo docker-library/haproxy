@@ -73,7 +73,7 @@ for version in "${versions[@]}"; do
 		'
 	fi
 	case "$version" in
-		1.* | 2.0 | 2.1 | 2.2 | 2.3)
+		1.* | 2.0 | 2.2 | 2.3)
 			# backwards compatibility (to try to avoid breaking existing users)
 			sedExpr+='
 				/^USER /d
