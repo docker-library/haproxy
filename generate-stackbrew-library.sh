@@ -10,11 +10,13 @@ declare -A aliases=(
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( */ )
-versions=( "${versions[@]%/}" )
+if [ "$#" -eq 0 ]; then
+	versions="$(jq -r 'keys | map(@sh) | join(" ")' versions.json)"
+	eval "set -- $versions"
+fi
 
 # sort version numbers with highest first
-IFS=$'\n'; versions=( $(echo "${versions[*]}" | sort -rV) ); unset IFS
+IFS=$'\n'; set -- $(sort -rV <<<"$*"); unset IFS
 
 # get the most recent commit which modified any of "$@"
 fileCommit() {
@@ -69,51 +71,45 @@ join() {
 	echo "${out#$sep}"
 }
 
-for version in "${versions[@]}"; do
-	dir="$version"
-	commit="$(dirCommit "$dir")"
+for version; do
+	export version
 
-	fullVersion="$(git show "$commit":"$dir/Dockerfile" | awk '$1 == "ENV" && $2 == "HAPROXY_VERSION" { print $3; exit }')"
+	fullVersion="$(jq -r '.[env.version].version' versions.json)"
 
 	# dcorbett(-haproxy): maybe just a simple "-dev" without the 0 which always follows the latest dev branch
+	tagVersion="$version"
 	if [[ "$version" == *-rc ]] && [[ "$fullVersion" == *-dev* ]]; then
-		version="${version%-rc}-dev"
+		tagVersion="${version%-rc}-dev"
 	fi
 
 	versionAliases=(
 		$fullVersion
-		$version
+		$tagVersion
 		${aliases[$version]:-}
 	)
 
-	parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$dir/Dockerfile")"
-	arches="${parentRepoToArches[$parent]}"
+	for variant in '' alpine; do
+		export variant
+		dir="$version${variant:+/$variant}"
 
-	echo
-	cat <<-EOE
-		Tags: $(join ', ' "${versionAliases[@]}")
-		Architectures: $(join ', ' $arches)
-		GitCommit: $commit
-		Directory: $dir
-	EOE
+		commit="$(dirCommit "$dir")"
 
-	for variant in alpine; do
-		[ -f "$dir/$variant/Dockerfile" ] || continue
+		if [ -n "$variant" ]; then
+			variantAliases=( "${versionAliases[@]/%/-$variant}" )
+			variantAliases=( "${variantAliases[@]//latest-/}" )
+		else
+			variantAliases=( "${versionAliases[@]}" )
+		fi
 
-		commit="$(dirCommit "$dir/$variant")"
-
-		variantAliases=( "${versionAliases[@]/%/-$variant}" )
-		variantAliases=( "${variantAliases[@]//latest-/}" )
-
-		variantParent="$(awk 'toupper($1) == "FROM" { print $2 }' "$dir/$variant/Dockerfile")"
-		variantArches="${parentRepoToArches[$variantParent]}"
+		parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$dir/Dockerfile")"
+		arches="${parentRepoToArches[$parent]}"
 
 		echo
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: $(join ', ' $variantArches)
+			Architectures: $(join ', ' $arches)
 			GitCommit: $commit
-			Directory: $dir/$variant
+			Directory: $dir
 		EOE
 	done
 done
