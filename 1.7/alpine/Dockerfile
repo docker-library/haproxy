@@ -1,4 +1,9 @@
-# vim:set ft=dockerfile:
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM alpine:3.12
 
 # roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
@@ -18,9 +23,9 @@ ENV HAPROXY_URL https://www.haproxy.org/download/1.7/src/haproxy-1.7.12.tar.gz
 ENV HAPROXY_SHA256 4118178b553a107b227f3f84774c7a50ae0b3ac2be39211c3db511ed4efe48ce
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
-RUN set -x \
+RUN set -eux; \
 	\
-	&& apk add --no-cache --virtual .build-deps \
+	apk add --no-cache --virtual .build-deps \
 		gcc \
 		libc-dev \
 		linux-headers \
@@ -32,14 +37,15 @@ RUN set -x \
 		readline-dev \
 		tar \
 		zlib-dev \
+	; \
 	\
-	&& wget -O haproxy.tar.gz "$HAPROXY_URL" \
-	&& echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c \
-	&& mkdir -p /usr/src/haproxy \
-	&& tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1 \
-	&& rm haproxy.tar.gz \
+	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
+	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
+	mkdir -p /usr/src/haproxy; \
+	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
+	rm haproxy.tar.gz; \
 	\
-	&& makeOpts=' \
+	makeOpts=' \
 		CFLAGS+="-Wno-address-of-packed-member" \
 		TARGET=linux2628 \
 		USE_GETADDRINFO=1 \
@@ -50,23 +56,27 @@ RUN set -x \
 		\
 		EXTRA_OBJS=" \
 		" \
-	' \
-	&& nproc="$(getconf _NPROCESSORS_ONLN)" \
-	&& eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts" \
-	&& eval "make -C /usr/src/haproxy install-bin $makeOpts" \
+	'; \
 	\
-	&& mkdir -p /usr/local/etc/haproxy \
-	&& cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors \
-	&& rm -rf /usr/src/haproxy \
+	nproc="$(getconf _NPROCESSORS_ONLN)"; \
+	eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts"; \
+	eval "make -C /usr/src/haproxy install-bin $makeOpts"; \
 	\
-	&& runDeps="$( \
+	mkdir -p /usr/local/etc/haproxy; \
+	cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors; \
+	rm -rf /usr/src/haproxy; \
+	\
+	runDeps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
 			| tr ',' '\n' \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)" \
-	&& apk add --no-network --virtual .haproxy-rundeps $runDeps \
-	&& apk del --no-network .build-deps
+	)"; \
+	apk add --no-network --virtual .haproxy-rundeps $runDeps; \
+	apk del --no-network .build-deps; \
+	\
+# smoke test
+	haproxy -v
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
@@ -78,4 +88,5 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
+# no USER for backwards compatibility (to try to avoid breaking existing users)
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
