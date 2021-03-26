@@ -18,9 +18,9 @@ RUN set -eux; \
 		--uid 99 \
 		haproxy
 
-ENV HAPROXY_VERSION 1.7.12
-ENV HAPROXY_URL https://www.haproxy.org/download/1.7/src/haproxy-1.7.12.tar.gz
-ENV HAPROXY_SHA256 4118178b553a107b227f3f84774c7a50ae0b3ac2be39211c3db511ed4efe48ce
+ENV HAPROXY_VERSION 1.7.13
+ENV HAPROXY_URL https://www.haproxy.org/download/1.7/src/haproxy-1.7.13.tar.gz
+ENV HAPROXY_SHA256 53ae3ae722236a56cc8b584bf1f8ef422fc40e9ce032d244e256c486c1713600
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
@@ -44,6 +44,14 @@ RUN set -eux; \
 	mkdir -p /usr/src/haproxy; \
 	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
 	rm haproxy.tar.gz; \
+	\
+# https://github.com/haproxy/haproxy/issues/760#issuecomment-804282562
+	apk add --no-cache --virtual .build-deps-patch patch; \
+# https://git.haproxy.org/?p=haproxy-1.7.git;a=commit;h=3280d0ab43e03ae5e94da205630fa576d7633627
+	wget -O ebtree.patch 'https://git.haproxy.org/?p=haproxy-1.7.git;a=patch;h=3280d0ab43e03ae5e94da205630fa576d7633627'; \
+	echo '8c8176604a9638d57fc4385154d8d2622d4ae52422ea53a5b91fac49459cfd2d *ebtree.patch' | sha256sum -c -; \
+	patch -p1 --input="$PWD/ebtree.patch" --directory=/usr/src/haproxy; \
+	apk del --no-network .build-deps-patch; \
 	\
 	makeOpts=' \
 		CFLAGS+="-Wno-address-of-packed-member" \
