@@ -70,16 +70,6 @@ RUN set -eux; \
 	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
 	rm haproxy.tar.gz; \
 	\
-{{ if env.version == "1.7" and env.variant == "alpine" then ( -}}
-# https://github.com/haproxy/haproxy/issues/760#issuecomment-804282562
-	apk add --no-cache --virtual .build-deps-patch patch; \
-# https://git.haproxy.org/?p=haproxy-1.7.git;a=commit;h=3280d0ab43e03ae5e94da205630fa576d7633627
-	wget -O ebtree.patch 'https://git.haproxy.org/?p=haproxy-1.7.git;a=patch;h=3280d0ab43e03ae5e94da205630fa576d7633627'; \
-	echo '8c8176604a9638d57fc4385154d8d2622d4ae52422ea53a5b91fac49459cfd2d *ebtree.patch' | sha256sum -c -; \
-	patch -p1 --input="$PWD/ebtree.patch" --directory=/usr/src/haproxy; \
-	apk del --no-network .build-deps-patch; \
-	\
-{{ ) else "" end -}}
 {{
 	def haproxy_target:
 		if env.version | startswith("1.") then
