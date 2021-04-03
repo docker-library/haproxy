@@ -90,12 +90,15 @@ RUN set -eux; \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
+{{ if env.version | startswith("2.") and ([ "2.0", "2.2", "2.3" ] | index(env.version) | not) then ( -}}
+		USE_PROMEX=1 \
+{{ ) else "" end -}}
 		\
 		EXTRA_OBJS=" \
-{{ if env.version | startswith("1.") then "" else ( -}}
+{{ if [ "2.0", "2.2", "2.3" ] | index(env.version) then ( -}}
 # see https://github.com/docker-library/haproxy/issues/94#issuecomment-505673353 for more details about prometheus support
 			contrib/prometheus-exporter/service-prometheus.o \
-{{ ) end -}}
+{{ ) else "" end -}}
 		" \
 	'; \
 {{ if env.variant == "alpine" then ( -}}
