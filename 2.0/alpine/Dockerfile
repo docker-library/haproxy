@@ -18,9 +18,9 @@ RUN set -eux; \
 		--uid 99 \
 		haproxy
 
-ENV HAPROXY_VERSION 2.0.21
-ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.21.tar.gz
-ENV HAPROXY_SHA256 9823fd0e33d77827538edc3ac86fb5d5c099e63350bdafc3beaa2632491a0132
+ENV HAPROXY_VERSION 2.0.22
+ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.22.tar.gz
+ENV HAPROXY_SHA256 5e1dccf30a3ad782d1e3298cc4e4955b168e4aa06cad4e3ea1c0334cdc0f966d
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
