@@ -90,7 +90,7 @@ RUN set -eux; \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
-{{ if env.version | startswith("2.") and ([ "2.0", "2.2", "2.3" ] | index(env.version) | not) then ( -}}
+{{ if ([ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version) | not) then ( -}}
 		USE_PROMEX=1 \
 {{ ) else "" end -}}
 		\
