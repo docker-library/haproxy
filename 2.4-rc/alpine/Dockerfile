@@ -36,7 +36,6 @@ RUN set -eux; \
 		pcre2-dev \
 		readline-dev \
 		tar \
-		zlib-dev \
 	; \
 	\
 	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
@@ -51,7 +50,6 @@ RUN set -eux; \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
-		USE_ZLIB=1 \
 		USE_PROMEX=1 \
 		\
 		EXTRA_OBJS=" \

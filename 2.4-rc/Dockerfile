@@ -34,7 +34,6 @@ RUN set -eux; \
 		libssl-dev \
 		make \
 		wget \
-		zlib1g-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
@@ -50,7 +49,6 @@ RUN set -eux; \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
-		USE_ZLIB=1 \
 		USE_PROMEX=1 \
 		\
 		EXTRA_OBJS=" \
