@@ -16,7 +16,7 @@ defaultDebianSuite='buster-slim'
 declare -A debianSuite=(
 	#[1.6]='stretch-slim'
 )
-defaultAlpineVersion='3.13'
+defaultAlpineVersion='3.14'
 declare -A alpineVersion=(
 	# Alpine 3.13 upgraded to GCC 10, so 1.7 fails:
 	# multiple definition of `pool2_trash'; src/haproxy.o:(.bss+0x0): first defined here
