@@ -16,36 +16,36 @@
   "2.0": {
     "alpine": "3.14",
     "debian": "buster-slim",
-    "sha256": "5ddc04e9040a07c647fa4b68fc9da6ec36063d56e12824b356e770dcf677c87a",
-    "url": "https://www.haproxy.org/download/2.0/src/haproxy-2.0.23.tar.gz",
-    "version": "2.0.23"
+    "sha256": "210e39599966e4ece6d431d51309c261b1ab5237a329a7a9f089426b0ceeea13",
+    "url": "https://www.haproxy.org/download/2.0/src/haproxy-2.0.24.tar.gz",
+    "version": "2.0.24"
   },
   "2.2": {
     "alpine": "3.14",
     "debian": "buster-slim",
-    "sha256": "48cd0e1cb5de889657cd080fe66cc2ada8198cfece55d63f3a0c011553384cd9",
-    "url": "https://www.haproxy.org/download/2.2/src/haproxy-2.2.15.tar.gz",
-    "version": "2.2.15"
+    "sha256": "b81e03a181070d1f7bcdaeec9f09af701fb1ab015c3c9c997a881f4773e29375",
+    "url": "https://www.haproxy.org/download/2.2/src/haproxy-2.2.16.tar.gz",
+    "version": "2.2.16"
   },
   "2.3": {
     "alpine": "3.14",
     "debian": "buster-slim",
-    "sha256": "684670d71ffe1ab3f0bfd1be0e55ea9d932732081dd01858b9e351c1a909be3e",
-    "url": "https://www.haproxy.org/download/2.3/src/haproxy-2.3.12.tar.gz",
-    "version": "2.3.12"
+    "sha256": "c651a44f1a1158085962ea64852ab163e0d21c5ef0ea4b2c5218728ed4dbe257",
+    "url": "https://www.haproxy.org/download/2.3/src/haproxy-2.3.13.tar.gz",
+    "version": "2.3.13"
   },
   "2.4": {
     "alpine": "3.14",
     "debian": "buster-slim",
-    "sha256": "edf9788f7f3411498e3d7b21777036b4dc14183e95c8e2ce7577baa0ea4ea2aa",
-    "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.2.tar.gz",
-    "version": "2.4.2"
+    "sha256": "ce479380be5464faa881dcd829618931b60130ffeb01c88bc2bf95e230046405",
+    "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.3.tar.gz",
+    "version": "2.4.3"
   },
   "2.5-rc": {
     "alpine": "3.14",
     "debian": "buster-slim",
-    "sha256": "519343d7304f14701f6c1f7b1f56f1f0acadaf2e7ee21872bca2949ba669fb58",
-    "url": "https://www.haproxy.org/download/2.5/src/devel/haproxy-2.5-dev3.tar.gz",
-    "version": "2.5-dev3"
+    "sha256": "9ca0bff5255ccadb42834785097cd380694dc087af6f6556585a979ddf470966",
+    "url": "https://www.haproxy.org/download/2.5/src/devel/haproxy-2.5-dev4.tar.gz",
+    "version": "2.5-dev4"
   }
 }
