@@ -103,6 +103,17 @@ for version; do
 		parent="$(awk 'toupper($1) == "FROM" { print $2 }' "$dir/Dockerfile")"
 		arches="${parentRepoToArches[$parent]}"
 
+		suite="${parent#*:}" # "buster-slim", "buster"
+		suite="${suite%-slim}" # "buster"
+		if [ "$variant" = 'alpine' ]; then
+			suite="alpine$suite" # "alpine3.8"
+			suiteAliases=( "${versionAliases[@]/%/-$suite}" )
+		else
+			suiteAliases=( "${variantAliases[@]/%/-$suite}" )
+		fi
+		suiteAliases=( "${suiteAliases[@]//latest-/}" )
+		variantAliases+=( "${suiteAliases[@]}" )
+
 		echo
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
