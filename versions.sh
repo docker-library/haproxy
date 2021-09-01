@@ -12,9 +12,11 @@ else
 fi
 versions=( "${versions[@]%/}" )
 
-defaultDebianSuite='buster-slim'
+defaultDebianSuite='bullseye-slim'
 declare -A debianSuite=(
-	#[1.6]='stretch-slim'
+	[1.7]='buster-slim'
+	[1.8]='buster-slim'
+	[2.0]='buster-slim'
 )
 defaultAlpineVersion='3.14'
 declare -A alpineVersion=(
