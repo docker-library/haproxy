@@ -15,7 +15,10 @@ RUN set -eux; \
 		--no-create-home \
 		--system \
 		--uid 99 \
-		haproxy
+		haproxy \
+	; \
+	mkdir /var/lib/haproxy; \
+	chown haproxy:haproxy /var/lib/haproxy
 
 ENV HAPROXY_VERSION 2.4.7
 ENV HAPROXY_URL https://www.haproxy.org/download/2.4/src/haproxy-2.4.7.tar.gz
