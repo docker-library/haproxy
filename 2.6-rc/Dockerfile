@@ -4,15 +4,14 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM alpine:3.14
+FROM debian:bullseye-slim
 
-# roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
+# roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
 RUN set -eux; \
-	addgroup --gid 99 --system haproxy; \
-	adduser \
-		--disabled-password \
-		--home /var/lib/haproxy \
-		--ingroup haproxy \
+	groupadd --gid 99 --system haproxy; \
+	useradd \
+		--gid haproxy \
+		--home-dir /var/lib/haproxy \
 		--no-create-home \
 		--system \
 		--uid 99 \
@@ -21,25 +20,25 @@ RUN set -eux; \
 	mkdir /var/lib/haproxy; \
 	chown haproxy:haproxy /var/lib/haproxy
 
-ENV HAPROXY_VERSION 2.5-dev15
-ENV HAPROXY_URL https://www.haproxy.org/download/2.5/src/devel/haproxy-2.5-dev15.tar.gz
-ENV HAPROXY_SHA256 4c14457d9e17270ed6af68f4051a786269916fa0d1ad26719214291cceb35d8b
+ENV HAPROXY_VERSION 2.6-dev0
+ENV HAPROXY_URL https://www.haproxy.org/download/2.6/src/devel/haproxy-2.6-dev0.tar.gz
+ENV HAPROXY_SHA256 b05c04938f069ed39aaf00ba5bff9aa02d0f963c64e7b350a3cad04011ef4d93
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
 	\
-	apk add --no-cache --virtual .build-deps \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update && apt-get install -y --no-install-recommends \
+		ca-certificates \
 		gcc \
-		libc-dev \
-		linux-headers \
-		lua5.3-dev \
+		libc6-dev \
+		liblua5.3-dev \
+		libpcre2-dev \
+		libssl-dev \
 		make \
-		openssl \
-		openssl-dev \
-		pcre2-dev \
-		readline-dev \
-		tar \
+		wget \
 	; \
+	rm -rf /var/lib/apt/lists/*; \
 	\
 	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
 	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
@@ -48,9 +47,9 @@ RUN set -eux; \
 	rm haproxy.tar.gz; \
 	\
 	makeOpts=' \
-		TARGET=linux-musl \
+		TARGET=linux-glibc \
 		USE_GETADDRINFO=1 \
-		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \
+		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \
@@ -58,8 +57,13 @@ RUN set -eux; \
 		EXTRA_OBJS=" \
 		" \
 	'; \
+# https://salsa.debian.org/haproxy-team/haproxy/-/commit/53988af3d006ebcbf2c941e34121859fd6379c70
+	dpkgArch="$(dpkg --print-architecture)"; \
+	case "$dpkgArch" in \
+		armel) makeOpts="$makeOpts ADDLIB=-latomic" ;; \
+	esac; \
 	\
-	nproc="$(getconf _NPROCESSORS_ONLN)"; \
+	nproc="$(nproc)"; \
 	eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts"; \
 	eval "make -C /usr/src/haproxy install-bin $makeOpts"; \
 	\
@@ -67,14 +71,17 @@ RUN set -eux; \
 	cp -R /usr/src/haproxy/examples/errorfiles /usr/local/etc/haproxy/errors; \
 	rm -rf /usr/src/haproxy; \
 	\
-	runDeps="$( \
-		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-			| tr ',' '\n' \
-			| sort -u \
-			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)"; \
-	apk add --no-network --virtual .haproxy-rundeps $runDeps; \
-	apk del --no-network .build-deps; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+	find /usr/local -type f -executable -exec ldd '{}' ';' \
+		| awk '/=>/ { print $(NF-1) }' \
+		| sort -u \
+		| xargs -r dpkg-query --search \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -r apt-mark manual \
+	; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
 # smoke test
 	haproxy -v
