@@ -7,49 +7,49 @@
     "version": "1.7.14"
   },
   "1.8": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "buster-slim",
     "sha256": "066bfd9a0e5a3550fa621886a132379e5331d0c377e11f38bb6e8dfbec92be42",
     "url": "https://www.haproxy.org/download/1.8/src/haproxy-1.8.30.tar.gz",
     "version": "1.8.30"
   },
   "2.0": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "buster-slim",
     "sha256": "97b0f1e8d786364c9594b087b0c2ad03c575f3e52f6fabd11045cc6d35f2f934",
     "url": "https://www.haproxy.org/download/2.0/src/haproxy-2.0.25.tar.gz",
     "version": "2.0.25"
   },
   "2.2": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "bullseye-slim",
     "sha256": "a04a179d82711cac2199c4615621aaa9598c4788de2b34dccb9dd44da2862c50",
     "url": "https://www.haproxy.org/download/2.2/src/haproxy-2.2.18.tar.gz",
     "version": "2.2.18"
   },
   "2.3": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "bullseye-slim",
     "sha256": "7a26c8a58dd6be9c7f5e8c89d85b3c8ef4f9825109c0d5fc8ff56b7d6d254320",
     "url": "https://www.haproxy.org/download/2.3/src/haproxy-2.3.16.tar.gz",
     "version": "2.3.16"
   },
   "2.4": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "bullseye-slim",
     "sha256": "d56c7fe3c5afedd1b9a19e1b7f8f954feaf50a9c2f205f99891043858b72a763",
     "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.9.tar.gz",
     "version": "2.4.9"
   },
   "2.5": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "bullseye-slim",
     "sha256": "16a5ed6256ca3670e41b76366a892b08485643204a3ce72b6e7a2d9a313aa225",
     "url": "https://www.haproxy.org/download/2.5/src/haproxy-2.5.0.tar.gz",
     "version": "2.5.0"
   },
   "2.6-rc": {
-    "alpine": "3.14",
+    "alpine": "3.15",
     "debian": "bullseye-slim",
     "sha256": "b05c04938f069ed39aaf00ba5bff9aa02d0f963c64e7b350a3cad04011ef4d93",
     "url": "https://www.haproxy.org/download/2.6/src/devel/haproxy-2.6-dev0.tar.gz",
