@@ -14,16 +14,11 @@ versions=( "${versions[@]%/}" )
 
 defaultDebianSuite='bullseye-slim'
 declare -A debianSuite=(
-	[1.7]='buster-slim'
 	[1.8]='buster-slim'
 	[2.0]='buster-slim'
 )
 defaultAlpineVersion='3.15'
 declare -A alpineVersion=(
-	# Alpine 3.13 upgraded to GCC 10, so 1.7 fails:
-	# multiple definition of `pool2_trash'; src/haproxy.o:(.bss+0x0): first defined here
-	# collect2: error: ld returned 1 exit status
-	[1.7]='3.12'
 )
 
 for version in "${versions[@]}"; do
