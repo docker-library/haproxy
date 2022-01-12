@@ -52,7 +52,7 @@ RUN set -eux; \
 		pcre2-dev \
 		readline-dev \
 		tar \
-{{ if ([ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version)) then ( -}}
+{{ if ([ "1.8", "2.0", "2.2", "2.3" ] | index(env.version)) then ( -}}
 		zlib-dev \
 {{ ) else "" end -}}
 	; \
@@ -67,7 +67,7 @@ RUN set -eux; \
 		libssl-dev \
 		make \
 		wget \
-{{ if ([ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version)) then ( -}}
+{{ if ([ "1.8", "2.0", "2.2", "2.3" ] | index(env.version)) then ( -}}
 		zlib1g-dev \
 {{ ) else "" end -}}
 	; \
@@ -91,18 +91,15 @@ RUN set -eux; \
 		end
 -}}
 	makeOpts=' \
-{{ if env.version == "1.7" and env.variant == "alpine" then ( -}}
-		CFLAGS+="-Wno-address-of-packed-member" \
-{{ ) else "" end -}}
 		TARGET={{ haproxy_target }} \
 		USE_GETADDRINFO=1 \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 {{ if env.variant == "alpine" then "LUA_LIB=/usr/lib/lua5.3 " else "" end }}\
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
-{{ if ([ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version)) then ( -}}
+{{ if ([ "1.8", "2.0", "2.2", "2.3" ] | index(env.version)) then ( -}}
 		USE_ZLIB=1 \
 {{ ) else "" end -}}
-{{ if ([ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version) | not) then ( -}}
+{{ if ([ "1.8", "2.0", "2.2", "2.3" ] | index(env.version) | not) then ( -}}
 		USE_PROMEX=1 \
 {{ ) else "" end -}}
 		\
@@ -165,12 +162,12 @@ RUN set -eux; \
 STOPSIGNAL SIGUSR1
 
 COPY docker-entrypoint.sh /usr/local/bin/
-{{ if [ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version) then ( -}}
+{{ if [ "1.8", "2.0", "2.2", "2.3" ] | index(env.version) then ( -}}
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 {{ ) else "" end -}}
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-{{ if [ "1.7", "1.8", "2.0", "2.2", "2.3" ] | index(env.version) then ( -}}
+{{ if [ "1.8", "2.0", "2.2", "2.3" ] | index(env.version) then ( -}}
 # no USER for backwards compatibility (to try to avoid breaking existing users)
 {{ ) else ( -}}
 USER haproxy
