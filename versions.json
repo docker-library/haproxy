@@ -9,9 +9,9 @@
   "2.0": {
     "alpine": "3.15",
     "debian": "buster-slim",
-    "sha256": "13ac74719a8b418cc346495fc7dfcbdd135be18aecb6a5083c801b234ad3dd47",
-    "url": "https://www.haproxy.org/download/2.0/src/haproxy-2.0.26.tar.gz",
-    "version": "2.0.26"
+    "sha256": "2283219173f0ad2d8f23a424d17f4172d7c09d39f9bb488c651d1a1108b93dd9",
+    "url": "https://www.haproxy.org/download/2.0/src/haproxy-2.0.27.tar.gz",
+    "version": "2.0.27"
   },
   "2.2": {
     "alpine": "3.15",
