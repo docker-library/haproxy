@@ -44,8 +44,8 @@
   "2.6-rc": {
     "alpine": "3.15",
     "debian": "bullseye-slim",
-    "sha256": "ade1d59d92b6961cd566414b84ae46053909e5b6103bccb2bb0773fbe01d84e8",
-    "url": "https://www.haproxy.org/download/2.6/src/devel/haproxy-2.6-dev6.tar.gz",
-    "version": "2.6-dev6"
+    "sha256": "acc4dddf381f6bef584e4059a20eea68a06b470a1b4d75eaab9aeabe88d13897",
+    "url": "https://www.haproxy.org/download/2.6/src/devel/haproxy-2.6-dev7.tar.gz",
+    "version": "2.6-dev7"
   }
 }
