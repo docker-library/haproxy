@@ -17,7 +17,7 @@ declare -A debianSuite=(
 	[1.8]='buster-slim'
 	[2.0]='buster-slim'
 )
-defaultAlpineVersion='3.15'
+defaultAlpineVersion='3.16'
 declare -A alpineVersion=(
 )
 
