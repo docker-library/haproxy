@@ -22,47 +22,26 @@ declare -A alpineVersion=(
 )
 
 for version in "${versions[@]}"; do
-	rcGrepV='-v'
-	rcVersion="${version%-rc}"
-	if [ "$rcVersion" != "$version" ]; then
-		rcGrepV=
-	fi
+	export url="https://www.haproxy.org/download/$version/src"
+	export debian="${debianSuite[$version]:-$defaultDebianSuite}"
+	export alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
 
-	fullVersion="$(
-		{
-			curl -fsSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/'
-			if [ "$rcVersion" != "$version" ]; then
-				curl -fsSL --compressed 'https://www.haproxy.org/download/'"$rcVersion"'/src/devel/'
-			fi
-		} \
-			| grep -o '<a href="haproxy-'"$rcVersion"'[^"/]*\.tar\.gz"' \
-			| sed -r 's!^<a href="haproxy-([^"/]+)\.tar\.gz"$!\1!' \
-			| grep $rcGrepV -E 'rc|dev' \
-			| sort -V \
-			| tail -1
+	doc="$(
+		curl -fsSL "$url/releases.json" | jq -c '
+			{ version: .latest_release } + .releases[.latest_release]
+			| {
+				version: .version,
+				url: (env.url + "/" + .file),
+				sha256: .sha256,
+				debian: env.debian,
+				alpine: env.alpine,
+			}
+		'
 	)"
-	url="https://www.haproxy.org/download/$rcVersion/src"
-	if [[ "$fullVersion" == *dev* ]]; then
-		url+='/devel'
-	fi
-	url+="/haproxy-$fullVersion.tar.gz"
-	sha256="$(curl -fsSL --compressed "$url.sha256" | cut -d' ' -f1)"
 
-	echo "$version: $fullVersion ($sha256, $url)"
-
-	versionSuite="${debianSuite[$version]:-$defaultDebianSuite}"
-	alpine="${alpineVersion[$version]:-$defaultAlpineVersion}"
-
-	export version fullVersion sha256 url versionSuite alpine
-	json="$(jq <<<"$json" -c '
-		.[env.version] = {
-			version: env.fullVersion,
-			sha256: env.sha256,
-			url: env.url,
-			debian: env.versionSuite,
-			alpine: env.alpine,
-		}
-	')"
+	export version
+	jq <<<"$doc" -r 'env.version + ": " + .version'
+	json="$(jq <<<"$json" -c --argjson doc "$doc" '.[env.version] = $doc')"
 done
 
 jq <<<"$json" -S . > versions.json
