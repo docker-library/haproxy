@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# https://www.haproxy.org/#down ("LTS" vs "latest")
+# https://www.haproxy.org/#last ("LTS" vs "latest")
 declare -A aliases=(
-	[2.5]='latest'
-	[2.4]='lts'
+	[2.6]='lts latest'
 )
 
 self="$(basename "$BASH_SOURCE")"
