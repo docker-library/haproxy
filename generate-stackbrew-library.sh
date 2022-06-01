@@ -77,8 +77,8 @@ for version; do
 
 	# dcorbett(-haproxy): maybe just a simple "-dev" without the 0 which always follows the latest dev branch
 	tagVersion="$version"
-	if [[ "$version" == *-rc ]] && [[ "$fullVersion" == *-dev* ]]; then
-		tagVersion="${version%-rc}-dev"
+	if [[ "$fullVersion" == *-dev* ]]; then
+		tagVersion="$version-dev"
 	fi
 
 	versionAliases=(
