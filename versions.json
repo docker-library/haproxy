@@ -2,9 +2,9 @@
   "1.8": {
     "alpine": "3.16",
     "debian": "buster-slim",
-    "sha256": "066bfd9a0e5a3550fa621886a132379e5331d0c377e11f38bb6e8dfbec92be42",
-    "url": "https://www.haproxy.org/download/1.8/src/haproxy-1.8.30.tar.gz",
-    "version": "1.8.30"
+    "sha256": "7fc2ff38c665e19bdc10de48de5512dbc5548efe7555a655a13a90afa481eaeb",
+    "url": "https://www.haproxy.org/download/1.8/src/haproxy-1.8.31.tar.gz",
+    "version": "1.8.31"
   },
   "2.0": {
     "alpine": "3.16",
