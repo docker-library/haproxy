@@ -14,13 +14,11 @@ versions=( "${versions[@]%/}" )
 
 defaultDebianSuite='bullseye-slim'
 declare -A debianSuite=(
-	[1.8]='buster-slim'
 	[2.0]='buster-slim'
 )
 defaultAlpineVersion='3.17'
 declare -A alpineVersion=(
 	# OpenSSL 3 incompatibilities
-	[1.8]='3.16'
 	[2.0]='3.16'
 )
 
