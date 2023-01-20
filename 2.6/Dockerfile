@@ -96,4 +96,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 USER haproxy
+
+# no WORKDIR for backwards compatibility (to try to avoid breaking existing users)
+
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
