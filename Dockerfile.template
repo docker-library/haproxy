@@ -170,4 +170,11 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 {{ ) else ( -}}
 USER haproxy
 {{ ) end -}}
+
+{{ if [ "2.0", "2.2", "2.4", "2.5", "2.6" ] | index(env.version) then ( -}}
+# no WORKDIR for backwards compatibility (to try to avoid breaking existing users)
+{{ ) else ( -}}
+WORKDIR /var/lib/haproxy
+{{ ) end -}}
+
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
