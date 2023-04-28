@@ -20,9 +20,9 @@ RUN set -eux; \
 	mkdir /var/lib/haproxy; \
 	chown haproxy:haproxy /var/lib/haproxy
 
-ENV HAPROXY_VERSION 2.8-dev8
-ENV HAPROXY_URL https://www.haproxy.org/download/2.8/src/devel/haproxy-2.8-dev8.tar.gz
-ENV HAPROXY_SHA256 bbe2c82c0e4f36e3f58ffbd01de2cbeea25b15be26348944f05f4817a17ccae0
+ENV HAPROXY_VERSION 2.8-dev9
+ENV HAPROXY_URL https://www.haproxy.org/download/2.8/src/devel/haproxy-2.8-dev9.tar.gz
+ENV HAPROXY_SHA256 ea58972223170412e5bf439439b57f3e22d03d2e026b66bea25517ce569d8b80
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
