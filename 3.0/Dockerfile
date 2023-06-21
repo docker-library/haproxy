@@ -32,7 +32,7 @@ RUN set -eux; \
 		ca-certificates \
 		gcc \
 		libc6-dev \
-		liblua5.3-dev \
+		liblua5.4-dev \
 		libpcre2-dev \
 		libssl-dev \
 		make \
@@ -49,7 +49,7 @@ RUN set -eux; \
 	makeOpts=' \
 		TARGET=linux-glibc \
 		USE_GETADDRINFO=1 \
-		USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
+		USE_LUA=1 LUA_INC=/usr/include/lua5.4 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \
