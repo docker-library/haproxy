@@ -6,6 +6,13 @@
 
 FROM alpine:3.19
 
+# runtime dependencies
+RUN set -eux; \
+	apk add --no-cache \
+# @system-ca: https://github.com/docker-library/haproxy/pull/216
+		ca-certificates \
+	;
+
 # roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
 RUN set -eux; \
 	addgroup --gid 99 --system haproxy; \

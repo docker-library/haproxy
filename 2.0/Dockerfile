@@ -6,6 +6,15 @@
 
 FROM debian:buster-slim
 
+# runtime dependencies
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+# @system-ca: https://github.com/docker-library/haproxy/pull/216
+		ca-certificates \
+	; \
+	rm -rf /var/lib/apt/lists/*
+
 # roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
 RUN set -eux; \
 	groupadd --gid 99 --system haproxy; \
@@ -29,7 +38,6 @@ RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update && apt-get install -y --no-install-recommends \
-		ca-certificates \
 		gcc \
 		libc6-dev \
 		liblua5.3-dev \
