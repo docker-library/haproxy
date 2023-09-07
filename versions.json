@@ -37,9 +37,9 @@
   "2.8": {
     "alpine": "3.18",
     "debian": "bullseye-slim",
-    "sha256": "698d6906d170946a869769964e57816ba3da3adf61ff75e89972b137f4658db0",
-    "url": "https://www.haproxy.org/download/2.8/src/haproxy-2.8.2.tar.gz",
-    "version": "2.8.2"
+    "sha256": "9ecc6ffe67a977d1ed279107bbdab790d73ae2a626bc38eee23fa1f6786a759e",
+    "url": "https://www.haproxy.org/download/2.8/src/haproxy-2.8.3.tar.gz",
+    "version": "2.8.3"
   },
   "2.9": {
     "alpine": "3.18",
