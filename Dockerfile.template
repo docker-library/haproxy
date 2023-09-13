@@ -135,6 +135,7 @@ RUN set -eux; \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
 	apk add --no-network --virtual .haproxy-rundeps $runDeps; \
+        apk add --no-cache tzdata \
 	apk del --no-network .build-deps; \
 {{ ) else ( -}}
 	apt-mark auto '.*' > /dev/null; \
@@ -148,6 +149,7 @@ RUN set -eux; \
 		| xargs -r apt-mark manual \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+        apt-get install -y --no-install-recommends tzdata \
 {{ ) end -}}
 	\
 # smoke test
