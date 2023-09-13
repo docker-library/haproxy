@@ -52,6 +52,7 @@ RUN set -eux; \
 		pcre2-dev \
 		readline-dev \
 		tar \
+                tzdata \
 {{ if ([ "2.0", "2.2" ] | index(env.version)) then ( -}}
 		zlib-dev \
 {{ ) else "" end -}}
