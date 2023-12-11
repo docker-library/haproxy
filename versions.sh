@@ -16,7 +16,7 @@ defaultDebianSuite='bullseye-slim'
 declare -A debianSuite=(
 	[2.0]='buster-slim'
 )
-defaultAlpineVersion='3.18'
+defaultAlpineVersion='3.19'
 declare -A alpineVersion=(
 	# OpenSSL 3 incompatibilities
 	[2.0]='3.16'
