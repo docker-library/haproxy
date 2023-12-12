@@ -12,13 +12,15 @@ else
 fi
 versions=( "${versions[@]%/}" )
 
-defaultDebianSuite='bullseye-slim'
+defaultDebianSuite='bookworm-slim'
 declare -A debianSuite=(
+	[2.2]='bullseye-slim'
 	[2.0]='buster-slim'
 )
 defaultAlpineVersion='3.19'
 declare -A alpineVersion=(
-	# OpenSSL 3 incompatibilities
+	# OpenSSL 3 incompatibilities (https://github.com/haproxy/haproxy/issues/1276)
+	[2.2]='3.16'
 	[2.0]='3.16'
 )
 
