@@ -32,7 +32,7 @@ RUN set -eux; \
 		gcc \
 		libc-dev \
 		linux-headers \
-		lua5.3-dev \
+		lua5.4-dev \
 		make \
 		openssl \
 		openssl-dev \
@@ -50,7 +50,7 @@ RUN set -eux; \
 	makeOpts=' \
 		TARGET=linux-musl \
 		USE_GETADDRINFO=1 \
-		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \
+		USE_LUA=1 LUA_INC=/usr/include/lua5.4 LUA_LIB=/usr/lib/lua5.4 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \

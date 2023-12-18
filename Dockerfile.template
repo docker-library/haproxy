@@ -36,6 +36,19 @@ RUN set -eux; \
 ENV HAPROXY_VERSION {{ .version }}
 ENV HAPROXY_URL {{ .url }}
 ENV HAPROXY_SHA256 {{ .sha256 }}
+{{
+	def lua:
+		# Lua 5.3 is EOL since 2020: https://www.lua.org/versions.html#5.3
+		#
+		# Since 5.4 is supported on haproxy, better use it now, but only for
+		# newer versions since there could be some minor incompatibilities
+		# for existing scripts: https://www.lua.org/manual/5.4/manual.html#8
+		if ([ "2.0", "2.2", "2.4", "2.6", "2.7", "2.8" ] | index(env.version)) then
+			"5.3"
+		else
+			"5.4"
+		end
+-}}
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
@@ -45,7 +58,7 @@ RUN set -eux; \
 		gcc \
 		libc-dev \
 		linux-headers \
-		lua5.3-dev \
+		lua{{ lua }}-dev \
 		make \
 		openssl \
 		openssl-dev \
@@ -62,7 +75,7 @@ RUN set -eux; \
 		ca-certificates \
 		gcc \
 		libc6-dev \
-		liblua5.3-dev \
+		liblua{{ lua }}-dev \
 		libpcre2-dev \
 		libssl-dev \
 		make \
@@ -91,7 +104,7 @@ RUN set -eux; \
 	makeOpts=' \
 		TARGET={{ haproxy_target }} \
 		USE_GETADDRINFO=1 \
-		USE_LUA=1 LUA_INC=/usr/include/lua5.3 {{ if env.variant == "alpine" then "LUA_LIB=/usr/lib/lua5.3 " else "" end }}\
+		USE_LUA=1 LUA_INC=/usr/include/lua{{ lua }}{{ if env.variant == "alpine" then (" LUA_LIB=/usr/lib/lua" + lua) else "" end }} \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 {{ if ([ "2.0", "2.2" ] | index(env.version)) then ( -}}
