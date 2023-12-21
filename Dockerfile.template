@@ -1,6 +1,13 @@
 {{ if env.variant == "alpine" then ( -}}
 FROM alpine:{{ .alpine }}
 
+# runtime dependencies
+RUN set -eux; \
+	apk add --no-cache \
+# @system-ca: https://github.com/docker-library/haproxy/pull/216
+		ca-certificates \
+	;
+
 # roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
 RUN set -eux; \
 	addgroup --gid 99 --system haproxy; \
@@ -17,6 +24,15 @@ RUN set -eux; \
 	chown haproxy:haproxy /var/lib/haproxy
 {{ ) else ( -}}
 FROM debian:{{ .debian }}
+
+# runtime dependencies
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+# @system-ca: https://github.com/docker-library/haproxy/pull/216
+		ca-certificates \
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 # roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
 RUN set -eux; \
@@ -72,7 +88,6 @@ RUN set -eux; \
 {{ ) else ( -}}
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update && apt-get install -y --no-install-recommends \
-		ca-certificates \
 		gcc \
 		libc6-dev \
 		liblua{{ lua }}-dev \
