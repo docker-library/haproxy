@@ -16,9 +16,9 @@
   "2.4": {
     "alpine": "3.19",
     "debian": "bookworm-slim",
-    "sha256": "44b035bdc9ffd4935f5292c2dfd4a1596c048dc59c5b25a0c6d7689d64f50b99",
-    "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.25.tar.gz",
-    "version": "2.4.25"
+    "sha256": "1cdcfbb3caff8864259e2981039f46f616ff15b6283ca601508325367ab550f3",
+    "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.26.tar.gz",
+    "version": "2.4.26"
   },
   "2.6": {
     "alpine": "3.19",
