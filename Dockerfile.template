@@ -59,7 +59,7 @@ ENV HAPROXY_SHA256 {{ .sha256 }}
 		# Since 5.4 is supported on haproxy, better use it now, but only for
 		# newer versions since there could be some minor incompatibilities
 		# for existing scripts: https://www.lua.org/manual/5.4/manual.html#8
-		if ([ "2.0", "2.2", "2.4", "2.6", "2.7", "2.8" ] | index(env.version)) then
+		if ([ "2.0", "2.2", "2.4", "2.6", "2.8" ] | index(env.version)) then
 			"5.3"
 		else
 			"5.4"
