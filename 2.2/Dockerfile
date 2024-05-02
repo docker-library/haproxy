@@ -6,6 +6,10 @@
 
 FROM debian:bullseye-slim
 
+# The global SOURCE_DATE_EPOCH is consumed by commands that are not associated with a source artifact.
+# This is not propagated from --build-arg: https://github.com/moby/buildkit/issues/4576#issuecomment-2159501282
+ENV SOURCE_DATE_EPOCH 0
+
 # runtime dependencies
 RUN set -eux; \
 	apt-get update; \
@@ -13,9 +17,12 @@ RUN set -eux; \
 # @system-ca: https://github.com/docker-library/haproxy/pull/216
 		ca-certificates \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+# clean up for reproducibility
+	rm -rf /var/log/* /var/cache/ldconfig/aux-cache
 
 # roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
+# On Debian, useradd recognizes SOURCE_DATE_EPOCH to reproduce the "lastchanged" field in /etc/shadow.
 RUN set -eux; \
 	groupadd --gid 99 --system haproxy; \
 	useradd \
@@ -48,12 +55,18 @@ RUN set -eux; \
 		zlib1g-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
+# clean up for reproducibility
+	rm -rf /var/log/* /var/cache/ldconfig/aux-cache ;\
 	\
 	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
 	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
 	mkdir -p /usr/src/haproxy; \
 	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
 	rm haproxy.tar.gz; \
+	SOURCE_DATE_EPOCH="$(find /usr/src/haproxy -type f -exec stat -c '%Y' {} + | sort -nr | head -n1)"; \
+	export SOURCE_DATE_EPOCH; \
+# for logging validation/edification
+	date --date "@$SOURCE_DATE_EPOCH" --rfc-2822; \
 	\
 	makeOpts=' \
 		TARGET=linux-glibc \
@@ -93,6 +106,8 @@ RUN set -eux; \
 		| xargs -r apt-mark manual \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+# clean up for reproducibility
+	rm -rf /var/log/* /var/cache/ldconfig/aux-cache ;\
 	\
 # smoke test
 	haproxy -v
