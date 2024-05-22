@@ -91,6 +91,10 @@ for version; do
 	for variant in '' alpine; do
 		export variant
 		dir="$version${variant:+/$variant}"
+		if [ ! -d "$dir" ]; then
+			# 2.2 can't be built on supported Alpine release, so it has no Alpine
+			continue
+		fi
 
 		commit="$(dirCommit "$dir")"
 
