@@ -15,7 +15,6 @@ versions=( "${versions[@]%/}" )
 defaultDebianSuite='bookworm-slim'
 declare -A debianSuite=(
 	[2.2]='bullseye-slim'
-	[2.0]='buster-slim'
 )
 defaultAlpineVersion='3.20'
 declare -A alpineVersion=(
@@ -38,7 +37,7 @@ for version in "${versions[@]}"; do
 				alpine: env.alpine,
 			}
 			# remove Alpine from versions where it cannot be built on any active Alpine release
-			| if [ "2.0", "2.2" ] | index(env.version) then del(.alpine) else . end
+			| if [ "2.2" ] | index(env.version) then del(.alpine) else . end
 		'
 	)"
 

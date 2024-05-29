@@ -1,10 +1,4 @@
 {
-  "2.0": {
-    "debian": "buster-slim",
-    "sha256": "95334c52ace9ae139e66d60240633be8bb4eed1babedfcc6cb947092e00c447c",
-    "url": "https://www.haproxy.org/download/2.0/src/haproxy-2.0.35.tar.gz",
-    "version": "2.0.35"
-  },
   "2.2": {
     "debian": "bullseye-slim",
     "sha256": "24f9eec04ee8d9e3652370be3db9852dec8aa650b3c8eeae969300c86b6fda5b",

@@ -31,10 +31,10 @@ for version; do
 	rm -rf "$version/"
 
 	for variant in '' alpine; do
-		# 2.0, 2.2 can't be built on Alpine greater than 3.16
+		# 2.2 can't be built on Alpine greater than 3.16
 		# OpenSSL 3 incompatibilities (https://github.com/haproxy/haproxy/issues/1276)
 		# but Alpine 3.16 is end of life
-		if { [ "$version" = '2.0' ] || [ "$version" = '2.2' ]; } && [ "$variant" = 'alpine' ]; then
+		if [ "$version" = '2.2' ] && [ "$variant" = 'alpine' ]; then
 			continue
 		fi
 		export version variant

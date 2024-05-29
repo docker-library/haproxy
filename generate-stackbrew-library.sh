@@ -92,7 +92,7 @@ for version; do
 		export variant
 		dir="$version${variant:+/$variant}"
 		if [ ! -d "$dir" ]; then
-			# 2.0, 2.2 can't be built on a supported Alpine release
+			# 2.2 can't be built on a supported Alpine release
 			continue
 		fi
 
