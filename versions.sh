@@ -37,7 +37,7 @@ for version in "${versions[@]}"; do
 				alpine: env.alpine,
 			}
 			# remove Alpine from versions where it cannot be built on any active Alpine release
-			| if [ "2.2" ] | index(env.version) then del(.alpine) else . end
+			| if env.version == "2.2" then del(.alpine) else . end
 		'
 	)"
 
