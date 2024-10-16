@@ -6,6 +6,10 @@
 
 FROM alpine:3.20
 
+# The global SOURCE_DATE_EPOCH is consumed by commands that are not associated with a source artifact.
+# This is not propagated from --build-arg: https://github.com/moby/buildkit/issues/4576#issuecomment-2159501282
+ENV SOURCE_DATE_EPOCH 0
+
 # runtime dependencies
 RUN set -eux; \
 	apk add --no-cache \
@@ -14,6 +18,7 @@ RUN set -eux; \
 	;
 
 # roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
+# On Alpine, useradd still does not recognize SOURCE_DATE_EPOCH to reproduce the "lastchanged" field in /etc/shadow.
 RUN set -eux; \
 	addgroup --gid 99 --system haproxy; \
 	adduser \
@@ -35,7 +40,7 @@ ENV HAPROXY_SHA256 ae38221e85aeba038a725efbef5bfe5e76671ba7959e5eb74c39fd079e5d0
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
 	\
-	apk add --no-cache --virtual .build-deps \
+	apk add --no-cache --virtual .build-deps=0 \
 		gcc \
 		libc-dev \
 		linux-headers \
@@ -53,6 +58,10 @@ RUN set -eux; \
 	mkdir -p /usr/src/haproxy; \
 	tar -xzf haproxy.tar.gz -C /usr/src/haproxy --strip-components=1; \
 	rm haproxy.tar.gz; \
+	SOURCE_DATE_EPOCH="$(find /usr/src/haproxy -type f -exec stat -c '%Y' {} + | sort -nr | head -n1)"; \
+	export SOURCE_DATE_EPOCH; \
+# for logging validation/edification
+	date --date "@$SOURCE_DATE_EPOCH" --rfc-2822; \
 	\
 	makeOpts=' \
 		TARGET=linux-musl \
@@ -80,7 +89,7 @@ RUN set -eux; \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --no-network --virtual .haproxy-rundeps $runDeps; \
+	apk add --no-network --virtual .haproxy-rundeps=0 $runDeps; \
 	apk del --no-network .build-deps; \
 	\
 # smoke test
