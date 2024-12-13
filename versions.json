@@ -6,49 +6,49 @@
     "version": "2.2.33"
   },
   "2.4": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "bf2edacb09a3080622e3d98100636d6cb6ee0dfc0bfbe98e5ea3b62b61d1209b",
     "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.28.tar.gz",
     "version": "2.4.28"
   },
   "2.6": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "ef8c397a37fec4f7df1cfadc2c90f19f4cc2e4163ae7457c7b052da9f5a17a69",
     "url": "https://www.haproxy.org/download/2.6/src/haproxy-2.6.20.tar.gz",
     "version": "2.6.20"
   },
   "2.8": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "13dc06a65b7705b94c843bda8b845edbb621bf45e8a9dc7db590d40ab920a9ce",
     "url": "https://www.haproxy.org/download/2.8/src/haproxy-2.8.13.tar.gz",
     "version": "2.8.13"
   },
   "2.9": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "77d73e6bcda4863855442fe0d8f8dda12323043eeb49d0b3763f0b7314b05a93",
     "url": "https://www.haproxy.org/download/2.9/src/haproxy-2.9.13.tar.gz",
     "version": "2.9.13"
   },
   "3.0": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "5c5c6b66645278435a89cd6e2a0d39f8e7d2546212d847bd0d236511ff996f11",
     "url": "https://www.haproxy.org/download/3.0/src/haproxy-3.0.7.tar.gz",
     "version": "3.0.7"
   },
   "3.1": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "8c1b5d439ba4b278e602445c57e20067adef214dc9c44c2a1cf172fad5f7d273",
     "url": "https://www.haproxy.org/download/3.1/src/haproxy-3.1.1.tar.gz",
     "version": "3.1.1"
   },
   "3.2": {
-    "alpine": "3.20",
+    "alpine": "3.21",
     "debian": "bookworm-slim",
     "sha256": "6fea62b4a1bb6f1f1c9f8ec55bd6c272913b4062a23ebf8411b6b1e2c5007a3f",
     "url": "https://www.haproxy.org/download/3.2/src/devel/haproxy-3.2-dev1.tar.gz",

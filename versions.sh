@@ -16,7 +16,7 @@ defaultDebianSuite='bookworm-slim'
 declare -A debianSuite=(
 	[2.2]='bullseye-slim'
 )
-defaultAlpineVersion='3.20'
+defaultAlpineVersion='3.21'
 declare -A alpineVersion=(
 )
 
