@@ -59,7 +59,7 @@ ENV HAPROXY_SHA256 {{ .sha256 }}
 		# Since 5.4 is supported on haproxy, better use it now, but only for
 		# newer versions since there could be some minor incompatibilities
 		# for existing scripts: https://www.lua.org/manual/5.4/manual.html#8
-		if env.version | IN("2.2", "2.4", "2.6", "2.8") then
+		if env.version | IN("2.4", "2.6", "2.8") then
 			"5.3"
 		else
 			"5.4"
@@ -81,9 +81,6 @@ RUN set -eux; \
 		pcre2-dev \
 		readline-dev \
 		tar \
-{{ if env.version == "2.2" then ( -}}
-		zlib-dev \
-{{ ) else "" end -}}
 	; \
 {{ ) else ( -}}
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -95,9 +92,6 @@ RUN set -eux; \
 		libssl-dev \
 		make \
 		wget \
-{{ if env.version == "2.2" then ( -}}
-		zlib1g-dev \
-{{ ) else "" end -}}
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 {{ ) end -}}
@@ -122,19 +116,7 @@ RUN set -eux; \
 		USE_LUA=1 LUA_INC=/usr/include/lua{{ lua }}{{ if env.variant == "alpine" then (" LUA_LIB=/usr/lib/lua" + lua) else "" end }} \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
-{{ if env.version == "2.2" then ( -}}
-		USE_ZLIB=1 \
-{{ ) else "" end -}}
-{{ if env.version == "2.2" then "" else ( -}}
 		USE_PROMEX=1 \
-{{ ) end -}}
-		\
-		EXTRA_OBJS=" \
-{{ if env.version == "2.2" then ( -}}
-# see https://github.com/docker-library/haproxy/issues/94#issuecomment-505673353 for more details about prometheus support
-			contrib/prometheus-exporter/service-prometheus.o \
-{{ ) else "" end -}}
-		" \
 	'; \
 {{ if env.variant == "alpine" then ( -}}
 	\
@@ -188,18 +170,11 @@ RUN set -eux; \
 STOPSIGNAL SIGUSR1
 
 COPY docker-entrypoint.sh /usr/local/bin/
-{{ if env.version == "2.2" then ( -}}
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
-{{ ) else "" end -}}
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-{{ if env.version == "2.2" then ( -}}
-# no USER for backwards compatibility (to try to avoid breaking existing users)
-{{ ) else ( -}}
 USER haproxy
-{{ ) end -}}
 
-{{ if [ "2.2", "2.4", "2.6" ] | index(env.version) then ( -}}
+{{ if [ "2.4", "2.6" ] | index(env.version) then ( -}}
 # no WORKDIR for backwards compatibility (to try to avoid breaking existing users)
 {{ ) else ( -}}
 # https://github.com/docker-library/haproxy/issues/200
