@@ -1,10 +1,4 @@
 {
-  "2.2": {
-    "debian": "bullseye-slim",
-    "sha256": "0fb78d1f296c45c7546a9a3167d595fb1af9eaf9e9c16a9324f36c55fbf2f323",
-    "url": "https://www.haproxy.org/download/2.2/src/haproxy-2.2.34.tar.gz",
-    "version": "2.2.34"
-  },
   "2.4": {
     "alpine": "3.21",
     "debian": "bookworm-slim",

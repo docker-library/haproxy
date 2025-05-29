@@ -61,9 +61,6 @@ RUN set -eux; \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \
-		\
-		EXTRA_OBJS=" \
-		" \
 	'; \
 # https://salsa.debian.org/haproxy-team/haproxy/-/commit/53988af3d006ebcbf2c941e34121859fd6379c70
 	dpkgArch="$(dpkg --print-architecture)"; \
