@@ -15,7 +15,7 @@ versions=( "${versions[@]%/}" )
 defaultDebianSuite='bookworm-slim'
 declare -A debianSuite=(
 )
-defaultAlpineVersion='3.21'
+defaultAlpineVersion='3.22'
 declare -A alpineVersion=(
 )
 
