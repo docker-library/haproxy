@@ -30,9 +30,9 @@
   "3.1": {
     "alpine": "3.22",
     "debian": "bookworm-slim",
-    "sha256": "a3952644ef939b36260d91d81a335636aa9b44572b4cb8b6001272f88545c666",
-    "url": "https://www.haproxy.org/download/3.1/src/haproxy-3.1.7.tar.gz",
-    "version": "3.1.7"
+    "sha256": "6f249014b547d34fb41e19867746ec4da4ea7be0c0ce3b56f3cfde57ca3b212d",
+    "url": "https://www.haproxy.org/download/3.1/src/haproxy-3.1.8.tar.gz",
+    "version": "3.1.8"
   },
   "3.2": {
     "alpine": "3.22",
