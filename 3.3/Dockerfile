@@ -4,16 +4,15 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # runtime dependencies
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 # @system-ca: https://github.com/docker-library/haproxy/pull/216
 		ca-certificates \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # roughly, https://salsa.debian.org/haproxy-team/haproxy/-/blob/732b97ae286906dea19ab5744cf9cf97c364ac1d/debian/haproxy.postinst#L5-6
 RUN set -eux; \
@@ -37,7 +36,7 @@ ENV HAPROXY_SHA256 35f1cd784f9af44f85bbc1e978a12422f5ab4e2d5d63df6aab96c47e2defb
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update && apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		gcc \
 		libc6-dev \
 		liblua5.4-dev \
@@ -46,7 +45,6 @@ RUN set -eux; \
 		make \
 		wget \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
 	\
 	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
 	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
@@ -87,6 +85,7 @@ RUN set -eux; \
 		| xargs -r apt-mark manual \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	apt-get dist-clean; \
 	\
 # smoke test
 	haproxy -v

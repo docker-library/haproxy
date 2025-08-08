@@ -12,7 +12,7 @@ else
 fi
 versions=( "${versions[@]%/}" )
 
-defaultDebianSuite='bookworm-slim'
+defaultDebianSuite='trixie-slim'
 declare -A debianSuite=(
 )
 defaultAlpineVersion='3.22'
