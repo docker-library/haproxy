@@ -11,6 +11,8 @@ RUN set -eux; \
 	apt-get install --update -y --no-install-recommends \
 # @system-ca: https://github.com/docker-library/haproxy/pull/216
 		ca-certificates \
+# https://github.com/docker-library/haproxy/issues/59#issuecomment-3418639873
+		socat \
 	; \
 	apt-get dist-clean
 
