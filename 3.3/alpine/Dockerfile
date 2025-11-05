@@ -11,6 +11,8 @@ RUN set -eux; \
 	apk add --no-cache \
 # @system-ca: https://github.com/docker-library/haproxy/pull/216
 		ca-certificates \
+# https://github.com/docker-library/haproxy/issues/59#issuecomment-3418639873
+		socat \
 	;
 
 # roughly, https://git.alpinelinux.org/aports/tree/main/haproxy/haproxy.pre-install?h=3.12-stable
