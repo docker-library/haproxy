@@ -47,5 +47,12 @@
     "sha256": "bf2da6b69f82d7b855be977ab9e1d4704eef5629b657ac72afb5958a869c902e",
     "url": "https://www.haproxy.org/download/3.3/src/haproxy-3.3.0.tar.gz",
     "version": "3.3.0"
+  },
+  "3.4": {
+    "alpine": "3.22",
+    "debian": "trixie-slim",
+    "sha256": "05e40bd9690b250ba35147f46a0cc3fa0355eb8413958a5a695149fd2f837f5e",
+    "url": "https://www.haproxy.org/download/3.4/src/devel/haproxy-3.4-dev0.tar.gz",
+    "version": "3.4-dev0"
   }
 }
