@@ -1,55 +1,55 @@
 {
   "2.4": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "2986f14b8cc2cd2331986ba2c8b19d3fec39830f5a5c48d4710d613117f5929e",
     "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.30.tar.gz",
     "version": "2.4.30"
   },
   "2.6": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "1281d57f25e98456a042c81f32801a106a293c1340b0c06debb2a87d6a7b3611",
     "url": "https://www.haproxy.org/download/2.6/src/haproxy-2.6.23.tar.gz",
     "version": "2.6.23"
   },
   "2.8": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "6eb4d3cc298af89613fc6cb175530436e1e463d368e43401a60357a7a12d15ab",
     "url": "https://www.haproxy.org/download/2.8/src/haproxy-2.8.16.tar.gz",
     "version": "2.8.16"
   },
   "3.0": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "cd2bade59a7e2d61f2d62be7c6c4cfc0e2b3a90431023720cae7c43843b0570b",
     "url": "https://www.haproxy.org/download/3.0/src/haproxy-3.0.12.tar.gz",
     "version": "3.0.12"
   },
   "3.1": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "d5e0be0f5949e725cac512f9ed81a740e8f3c22f6c69deede0480389960356c2",
     "url": "https://www.haproxy.org/download/3.1/src/haproxy-3.1.10.tar.gz",
     "version": "3.1.10"
   },
   "3.2": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "e660d141b29019f4d198785b0834cc3e9c96efceeb807c2fff2fc935bd3354c2",
     "url": "https://www.haproxy.org/download/3.2/src/haproxy-3.2.9.tar.gz",
     "version": "3.2.9"
   },
   "3.3": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "bf2da6b69f82d7b855be977ab9e1d4704eef5629b657ac72afb5958a869c902e",
     "url": "https://www.haproxy.org/download/3.3/src/haproxy-3.3.0.tar.gz",
     "version": "3.3.0"
   },
   "3.4": {
-    "alpine": "3.22",
+    "alpine": "3.23",
     "debian": "trixie-slim",
     "sha256": "05e40bd9690b250ba35147f46a0cc3fa0355eb8413958a5a695149fd2f837f5e",
     "url": "https://www.haproxy.org/download/3.4/src/devel/haproxy-3.4-dev0.tar.gz",
