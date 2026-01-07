@@ -61,6 +61,10 @@ RUN set -eux; \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \
+		# https://www.haproxy.com/blog/announcing-haproxy-3-2#quic-protocol
+		# [in 3.2] QUIC TLS API was ported to OpenSSL 3.5
+		# Openssl 3.5+ is available on Debian Trixie and Alpine 3.22 and newer
+		USE_QUIC=1 \
 	'; \
 # https://salsa.debian.org/haproxy-team/haproxy/-/commit/53988af3d006ebcbf2c941e34121859fd6379c70
 	dpkgArch="$(dpkg --print-architecture)"; \

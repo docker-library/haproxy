@@ -119,6 +119,12 @@ RUN set -eux; \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \
+{{ if env.version | IN("2.4", "2.6", "2.8", "3.0", "3.1") then "" else ( -}}
+		# https://www.haproxy.com/blog/announcing-haproxy-3-2#quic-protocol
+		# [in 3.2] QUIC TLS API was ported to OpenSSL 3.5
+		# Openssl 3.5+ is available on Debian Trixie and Alpine 3.22 and newer
+		USE_QUIC=1 \
+{{ ) end -}}
 	'; \
 {{ if env.variant == "alpine" then ( -}}
 	\
@@ -177,7 +183,7 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 USER haproxy
 
-{{ if [ "2.4", "2.6" ] | index(env.version) then ( -}}
+{{ if env.version | IN("2.4", "2.6") then ( -}}
 # no WORKDIR for backwards compatibility (to try to avoid breaking existing users)
 {{ ) else ( -}}
 # https://github.com/docker-library/haproxy/issues/200
