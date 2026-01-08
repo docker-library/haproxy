@@ -61,6 +61,8 @@ RUN set -eux; \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_PROMEX=1 \
+		# https://github.com/haproxy/haproxy/blob/a203ce685464988afbd92c8a376fcafae9bab5b5/INSTALL#L368-L373
+		USE_PTHREAD_EMULATION=1 \
 	'; \
 # https://salsa.debian.org/haproxy-team/haproxy/-/commit/53988af3d006ebcbf2c941e34121859fd6379c70
 	dpkgArch="$(dpkg --print-architecture)"; \
