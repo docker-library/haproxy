@@ -121,7 +121,7 @@ RUN set -eux; \
 		USE_PROMEX=1 \
 		# https://github.com/haproxy/haproxy/blob/a203ce685464988afbd92c8a376fcafae9bab5b5/INSTALL#L368-L373
 		USE_PTHREAD_EMULATION=1 \
-{{ if env.version | IN("2.4", "2.6", "2.8", "3.0", "3.1") then "" else ( -}}
+{{ if env.version | IN("2.4", "2.6", "2.8", "3.0") then "" else ( -}}
 		# https://www.haproxy.com/blog/announcing-haproxy-3-2#quic-protocol
 		# [in 3.2] QUIC TLS API was ported to OpenSSL 3.5
 		# Openssl 3.5+ is available on Debian Trixie and Alpine 3.22 and newer
