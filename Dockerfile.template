@@ -62,7 +62,7 @@ ENV HAPROXY_SHA256 {{ .sha256 }}
 		# Since 5.4 is supported on haproxy, better use it now, but only for
 		# newer versions since there could be some minor incompatibilities
 		# for existing scripts: https://www.lua.org/manual/5.4/manual.html#8
-		if env.version | IN("2.4", "2.6", "2.8") then
+		if env.version | IN("2.6", "2.8") then
 			"5.3"
 		else
 			"5.4"
@@ -121,7 +121,7 @@ RUN set -eux; \
 		USE_PROMEX=1 \
 		# https://github.com/haproxy/haproxy/blob/a203ce685464988afbd92c8a376fcafae9bab5b5/INSTALL#L368-L373
 		USE_PTHREAD_EMULATION=1 \
-{{ if env.version | IN("2.4", "2.6", "2.8", "3.0") then "" else ( -}}
+{{ if env.version | IN("2.6", "2.8", "3.0") then "" else ( -}}
 		# https://www.haproxy.com/blog/announcing-haproxy-3-2#quic-protocol
 		# [in 3.2] QUIC TLS API was ported to OpenSSL 3.5
 		# Openssl 3.5+ is available on Debian Trixie and Alpine 3.22 and newer
@@ -185,7 +185,7 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 USER haproxy
 
-{{ if env.version | IN("2.4", "2.6") then ( -}}
+{{ if env.version | IN("2.6") then ( -}}
 # no WORKDIR for backwards compatibility (to try to avoid breaking existing users)
 {{ ) else ( -}}
 # https://github.com/docker-library/haproxy/issues/200
