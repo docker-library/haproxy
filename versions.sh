@@ -15,7 +15,7 @@ versions=( "${versions[@]%/}" )
 defaultDebianSuite='trixie-slim'
 declare -A debianSuite=(
 )
-defaultAlpineVersion='3.23'
+defaultAlpineVersion='3.24'
 declare -A alpineVersion=(
 )
 

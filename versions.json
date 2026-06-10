@@ -1,48 +1,48 @@
 {
   "2.4": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "931ad4de3f036ac8f18a5f1370460aed69dc5b0b0d3fa228dddb7211970fb44a",
     "url": "https://www.haproxy.org/download/2.4/src/haproxy-2.4.35.tar.gz",
     "version": "2.4.35"
   },
   "2.6": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "00fa66b30bf90e8bf3201a61d3ce84d57b2c11a44d16c69b9b5b1b7baf945f4e",
     "url": "https://www.haproxy.org/download/2.6/src/haproxy-2.6.29.tar.gz",
     "version": "2.6.29"
   },
   "2.8": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "f27fcd5e04cfc390ec9e92c24cfa8c908f78b31627a5587c5fd03b457c1a3c36",
     "url": "https://www.haproxy.org/download/2.8/src/haproxy-2.8.24.tar.gz",
     "version": "2.8.24"
   },
   "3.0": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "05084ba42534069f8b8c92114ba480a2fd636b0d612c3f63dcc1710b302d17c3",
     "url": "https://www.haproxy.org/download/3.0/src/haproxy-3.0.23.tar.gz",
     "version": "3.0.23"
   },
   "3.2": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "b08ebbd57f575012e4a5eb5b772721531fbacf6913ffd334f0281736a1ad78b6",
     "url": "https://www.haproxy.org/download/3.2/src/haproxy-3.2.19.tar.gz",
     "version": "3.2.19"
   },
   "3.3": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "6aa919a13f3a575416ef0ae45da0ecb35f1a8d004641dd684fe9b53e646891f2",
     "url": "https://www.haproxy.org/download/3.3/src/haproxy-3.3.10.tar.gz",
     "version": "3.3.10"
   },
   "3.4": {
-    "alpine": "3.23",
+    "alpine": "3.24",
     "debian": "trixie-slim",
     "sha256": "9298f565c2a9ba8a4e7f89c54be2c5d3fd960b5b304eb5515e15d29d2c15d4f7",
     "url": "https://www.haproxy.org/download/3.4/src/haproxy-3.4.0.tar.gz",
